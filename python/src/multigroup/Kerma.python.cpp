@@ -65,7 +65,7 @@ void wrapKerma( python::module& module, python::module& ) {
 
     "from_string",
     [] ( const std::string& string, unsigned int number ) -> Record
-       { return readWithSubtype< Record >( string, number ); },
+       { return readWithParticleSubtype< Record >( string, number ); },
     python::arg( "string" ), python::arg( "number" ),
     "Read the record from a string\n\n"
     "An exception is raised if something goes wrong while reading the\n"

@@ -94,7 +94,12 @@ if( NDItk.python )
   pybind11_add_module( NDItk.python
       python/src/NDItk.python.cpp
       python/src/MultigroupTable.python.cpp
+      python/src/depletion.python.cpp
+      python/src/depletion/ReactionMultiplicityType.python.cpp
+      python/src/depletion/Multiplicities.python.cpp
+      python/src/depletion/ReactionMultiplicities.python.cpp
       python/src/multigroup.python.cpp
+      python/src/multigroup/FissionType.python.cpp
       python/src/multigroup/Metadata.python.cpp
       python/src/multigroup/CrossSection.python.cpp
       python/src/multigroup/FluxWeights.python.cpp

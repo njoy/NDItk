@@ -9,6 +9,8 @@
 
 // other includes
 #include "tools/Log.hpp"
+#include "NDItk/multigroup/FissionType.hpp"
+#include "NDItk/depletion/ReactionMultiplicityType.hpp"
 
 namespace njoy {
 namespace NDItk {
@@ -25,6 +27,8 @@ class Keyword {
   std::string keyword_;
   std::optional< std::string > subtype_ = std::nullopt;
   std::optional< unsigned int > particle_ = std::nullopt;
+  std::optional< depletion::ReactionMultiplicityType > multiplicity_ = std::nullopt;
+  std::optional< multigroup::FissionType > fission_ = std::nullopt;
 
   /* auxilairy functions */
   #include "NDItk/base/Keyword/src/splitKeyword.hpp"
@@ -54,6 +58,22 @@ public:
    *  @brief Return the particle identifier (if any)
    */
   const std::optional< unsigned int >& particle() const { return this->particle_; }
+
+  /**
+   *  @brief Return the multiplicity type (if any)
+   */
+  const std::optional< depletion::ReactionMultiplicityType >& multiplicityType() const {
+
+    return this->multiplicity_;
+  }
+
+  /**
+   *  @brief Return the fission type (if any)
+   */
+  const std::optional< multigroup::FissionType >& fissionType() const {
+
+    return this->fission_;
+  }
 
   /**
    *  @brief Print the record keyword

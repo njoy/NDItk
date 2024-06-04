@@ -1,5 +1,5 @@
 /**
- *  @brief Read the record data
+ *  @brief Read the record data (secondary particle production matrix)
  *
  *  @param[in,out] iter        an iterator to the current position in the input
  *  @param[in,out] end         an iterator to the end of the input
@@ -23,12 +23,11 @@ void read( Iterator& iter, const Iterator& end, unsigned int incident,
 };
 
 /**
- *  @brief Read the record data
+ *  @brief Read the record data (scattering matrix)
  *
  *  @param[in,out] iter        an iterator to the current position in the input
  *  @param[in,out] end         an iterator to the end of the input
  *  @param[in,out] incident    the number of incident energy groups
- *  @param[in,out] outgoing    the number of outgoing energy groups
  *  @param[in,out] number      the number of moments
  */
 template< typename Iterator >

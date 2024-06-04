@@ -15,7 +15,7 @@ void write( OutputIterator& iter ) const {
   ++x;
 
   auto full = ( this->size() - 1 ) / 5;
-  auto partial = ( this->size() - 1 ) - full * 5;
+  auto partial = ( this->size() - 1 ) % 5;
 
   while ( full-- ) {
 

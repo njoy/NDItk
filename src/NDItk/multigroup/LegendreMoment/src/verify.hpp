@@ -2,7 +2,7 @@
  *  @brief Verify the cross section data values
  *
  *  The following verification tests are performed:
- *    - there are at least three values
+ *    - there are at least two values
  *    - the reaction identifier looks to be an integer
  *
  *  @param[in] data    the data values in the Legendre moment subrecord

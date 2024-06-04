@@ -43,7 +43,7 @@ SCENARIO( "MultigroupTable" ) {
       multigroup::TotalCrossSection total( { 1.1, 1.2, 1.25, 1.05, 1.15, 1.04, 1.06 } );
       multigroup::ReactionCrossSections xs( { { 2, 0.0, { 10., 20., 30., 40., 50., 60., 70. } },
                                               { 16, 1.1234567, { 1., 2., 3., 4., 5., 6., 7. } } } );
-      multigroup::ScatteringMatrix scattering( { { 0, { 1, 0, 0, 0, 0, 0, 0,
+      multigroup::ScatteringMatrix scattering( { { 0, { 0.999999999999, 0.0000000000001, 0, 0, 0, 0, 0,
                                                         0, 1, 0, 0, 0, 0, 0,
                                                         0, 0, 1, 0, 0, 0, 0,
                                                         0, 0, 0, 1, 0, 0, 0,
@@ -322,7 +322,7 @@ std::string chunk() {
          "    6 7\n"
          "pn_full\n"
          "    0\n"
-         "    1 0 0 0 0\n"
+         "    0.999999999999 1e-13 0 0 0\n"
          "    0 0 0 1 0\n"
          "    0 0 0 0 0\n"
          "    0 1 0 0 0\n"
@@ -547,8 +547,8 @@ void verifyChunk( const MultigroupTable& chunk ) {
   CHECK( 7 == moment.matrix().size() );
   CHECK( 7 == moment.matrix()[0].size() );
   CHECK( 0 == moment.order() );
-  CHECK_THAT( 1, WithinRel( moment.matrix()[0][0] ) );
-  CHECK_THAT( 0, WithinRel( moment.matrix()[0][1] ) );
+  CHECK_THAT( 0.999999999999, WithinRel( moment.matrix()[0][0] ) );
+  CHECK_THAT( 1e-13, WithinRel( moment.matrix()[0][1] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][2] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][3] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][4] ) );

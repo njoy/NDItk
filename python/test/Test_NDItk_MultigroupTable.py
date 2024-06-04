@@ -152,8 +152,8 @@ class Test_NDItk_MultigroupTable( unittest.TestCase ) :
             self.assertEqual( 7, len( moment.matrix ) )
             self.assertEqual( 7, len( moment.matrix[0] ) )
             self.assertEqual( 0, moment.order )
-            self.assertAlmostEqual( 1, moment.matrix[0][0] )
-            self.assertAlmostEqual( 0, moment.matrix[0][1] )
+            self.assertAlmostEqual( 0.999999999999, moment.matrix[0][0] )
+            self.assertAlmostEqual( 1e-13, moment.matrix[0][1] )
             self.assertAlmostEqual( 0, moment.matrix[0][2] )
             self.assertAlmostEqual( 0, moment.matrix[0][3] )
             self.assertAlmostEqual( 0, moment.matrix[0][4] )
@@ -476,7 +476,7 @@ class Test_NDItk_MultigroupTable( unittest.TestCase ) :
                                                    xs = [ CrossSection( 2, 0., [ 10., 20., 30., 40., 50., 60., 70. ] ),
                                                           CrossSection( 16, 1.1234567, [ 1., 2., 3., 4., 5., 6., 7. ] ) ] ),
                                  scattering = ScatteringMatrix(
-                                     [ LegendreMoment( 0, [ 1, 0, 0, 0, 0, 0, 0,
+                                     [ LegendreMoment( 0, [ 0.999999999999, 1e-13, 0, 0, 0, 0, 0,
                                                             0, 1, 0, 0, 0, 0, 0,
                                                             0, 0, 1, 0, 0, 0, 0,
                                                             0, 0, 0, 1, 0, 0, 0,

@@ -12,6 +12,7 @@ using Catch::Matchers::WithinRel;
 using namespace njoy::NDItk;
 using Multiplicities = depletion::Multiplicities;
 using ReactionMultiplicities = depletion::ReactionMultiplicities;
+using ReactionMultiplicityType = depletion::ReactionMultiplicityType;
 
 std::string chunk();
 void verifyChunk( const ReactionMultiplicities& );
@@ -88,7 +89,7 @@ SCENARIO( "ReactionMultiplicities" ) {
         { 16, { 1, 92234 }, { 2, 1 } }
       };
 
-      ReactionMultiplicities chunk( depletion::ReactionMultiplicityType::All,
+      ReactionMultiplicities chunk( ReactionMultiplicityType::All,
                                     std::move( multiplicities ) );
 
       THEN( "a ReactionMultiplicities can be constructed and members can "
@@ -112,7 +113,7 @@ SCENARIO( "ReactionMultiplicities" ) {
       auto iter = record.begin() + 9;
       auto end = record.end();
 
-      ReactionMultiplicities chunk( depletion::ReactionMultiplicityType::All );
+      ReactionMultiplicities chunk( ReactionMultiplicityType::All );
       chunk.read( iter, end, 2 );
 
       THEN( "a ReactionMultiplicities can be constructed and members can "
@@ -192,6 +193,7 @@ void verifyChunk( const ReactionMultiplicities& chunk ) {
   CHECK( false == chunk.empty() );
   CHECK( 12 == chunk.size() );
 
+  CHECK( std::nullopt == chunk.type() );
   CHECK( 2 == chunk.numberReactions() );
 
   CHECK( true == chunk.hasReaction( 2 ) );
@@ -260,6 +262,7 @@ void verifyChunkWithMultiplicityType( const ReactionMultiplicities& chunk ) {
   CHECK( false == chunk.empty() );
   CHECK( 12 == chunk.size() );
 
+  CHECK( ReactionMultiplicityType::All == chunk.type() );
   CHECK( 2 == chunk.numberReactions() );
 
   CHECK( true == chunk.hasReaction( 2 ) );

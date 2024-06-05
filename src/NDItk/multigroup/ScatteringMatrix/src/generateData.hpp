@@ -1,7 +1,7 @@
 /**
  *  @brief Generate the record's data vector
  *
- *  @param[in] xs    the cross section data
+ *  @param[in] moments    the Legendre moments
  */
 static std::vector< double > generateData( std::vector< LegendreMoment > moments ) {
 

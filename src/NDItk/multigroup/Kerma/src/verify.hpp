@@ -1,5 +1,5 @@
 /**
- *  @brief Verify the weights
+ *  @brief Verify the kerma values
  *
  *  The following verification tests are performed:
  *    - there is at least one value

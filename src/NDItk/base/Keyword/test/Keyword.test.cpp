@@ -11,6 +11,8 @@ using Catch::Matchers::WithinRel;
 // convenience typedefs
 using namespace njoy::NDItk;
 using Keyword = base::Keyword;
+using ReactionMultiplicityType = depletion::ReactionMultiplicityType;
+using FissionType = multigroup::FissionType;
 
 SCENARIO( "Keyword" ) {
 
@@ -78,7 +80,23 @@ SCENARIO( "Keyword" ) {
   CHECK( std::nullopt == result.fissionType() );
   CHECK( true == result.hasSubtype() );
 
+  result = Keyword( "rprod", ReactionMultiplicityType::All );
+  CHECK( "rprod_all" == result.keyword() );
+  CHECK( "rprod" == result.subtype() );
+  CHECK( std::nullopt == result.particle() );
+  CHECK( depletion::ReactionMultiplicityType::All == result.multiplicityType() );
+  CHECK( std::nullopt == result.fissionType() );
+  CHECK( true == result.hasSubtype() );
+
   result = Keyword( "rprod_few" );
+  CHECK( "rprod_few" == result.keyword() );
+  CHECK( "rprod" == result.subtype() );
+  CHECK( std::nullopt == result.particle() );
+  CHECK( depletion::ReactionMultiplicityType::Few == result.multiplicityType() );
+  CHECK( std::nullopt == result.fissionType() );
+  CHECK( true == result.hasSubtype() );
+
+  result = Keyword( "rprod", ReactionMultiplicityType::Few );
   CHECK( "rprod_few" == result.keyword() );
   CHECK( "rprod" == result.subtype() );
   CHECK( std::nullopt == result.particle() );
@@ -94,7 +112,23 @@ SCENARIO( "Keyword" ) {
   CHECK( std::nullopt == result.fissionType() );
   CHECK( true == result.hasSubtype() );
 
+  result = Keyword( "rprod", ReactionMultiplicityType::RMO );
+  CHECK( "rprod_rmo" == result.keyword() );
+  CHECK( "rprod" == result.subtype() );
+  CHECK( std::nullopt == result.particle() );
+  CHECK( depletion::ReactionMultiplicityType::RMO == result.multiplicityType() );
+  CHECK( std::nullopt == result.fissionType() );
+  CHECK( true == result.hasSubtype() );
+
   result = Keyword( "nu_pr" );
+  CHECK( "nu_pr" == result.keyword() );
+  CHECK( "nu" == result.subtype() );
+  CHECK( std::nullopt == result.particle() );
+  CHECK( std::nullopt == result.multiplicityType() );
+  CHECK( multigroup::FissionType::Prompt == result.fissionType() );
+  CHECK( true == result.hasSubtype() );
+
+  result = Keyword( "nu", FissionType::Prompt );
   CHECK( "nu_pr" == result.keyword() );
   CHECK( "nu" == result.subtype() );
   CHECK( std::nullopt == result.particle() );
@@ -110,7 +144,23 @@ SCENARIO( "Keyword" ) {
   CHECK( multigroup::FissionType::Delayed == result.fissionType() );
   CHECK( true == result.hasSubtype() );
 
+  result = Keyword( "nu", FissionType::Delayed );
+  CHECK( "nu_del" == result.keyword() );
+  CHECK( "nu" == result.subtype() );
+  CHECK( std::nullopt == result.particle() );
+  CHECK( std::nullopt == result.multiplicityType() );
+  CHECK( multigroup::FissionType::Delayed == result.fissionType() );
+  CHECK( true == result.hasSubtype() );
+
   result = Keyword( "nu_tot" );
+  CHECK( "nu_tot" == result.keyword() );
+  CHECK( "nu" == result.subtype() );
+  CHECK( std::nullopt == result.particle() );
+  CHECK( std::nullopt == result.multiplicityType() );
+  CHECK( multigroup::FissionType::Total == result.fissionType() );
+  CHECK( true == result.hasSubtype() );
+
+  result = Keyword( "nu", FissionType::Total );
   CHECK( "nu_tot" == result.keyword() );
   CHECK( "nu" == result.subtype() );
   CHECK( std::nullopt == result.particle() );

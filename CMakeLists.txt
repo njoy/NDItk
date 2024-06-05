@@ -107,6 +107,10 @@ if( NDItk.python )
       python/src/multigroup/ReactionCrossSections.python.cpp
       python/src/multigroup/TotalCrossSection.python.cpp
       python/src/multigroup/AverageFissionEnergyRelease.python.cpp
+      python/src/multigroup/FissionNeutronMultiplicity.python.cpp
+      python/src/multigroup/FissionNeutronProduction.python.cpp
+      python/src/multigroup/FissionNeutronSpectrumVector.python.cpp
+      python/src/multigroup/FissionNeutronSpectrumMatrix.python.cpp
       python/src/multigroup/Velocities.python.cpp
       python/src/multigroup/HeatingNumbers.python.cpp
       python/src/multigroup/Kerma.python.cpp

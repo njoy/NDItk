@@ -27,7 +27,6 @@ class ReactionMultiplicities : protected base::IntegerListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/depletion/ReactionMultiplicities/src/getPostFix.hpp"
   #include "NDItk/depletion/ReactionMultiplicities/src/verify.hpp"
   #include "NDItk/depletion/ReactionMultiplicities/src/generateData.hpp"
   #include "NDItk/depletion/ReactionMultiplicities/src/generateBlocks.hpp"
@@ -41,6 +40,11 @@ public:
   #include "NDItk/depletion/ReactionMultiplicities/src/ctor.hpp"
 
   /* methods */
+
+  /**
+   *  @brief Return the multiplicity type defined by this record
+   */
+  decltype(auto) type() const { return this->key().multiplicityType(); }
 
   /**
    *  @brief Return the number of reactions defined in this record

@@ -68,7 +68,7 @@ class Test_NDItk_multigroup_EnergyGroupStructure( unittest.TestCase ) :
                 self.assertAlmostEqual( self.chunk_outgoing_values[index], values[index] )
 
         # the data is given explicitly
-        chunk = EnergyGroupStructure( boundaries = [ 20., 18., 16., 14., 10., 5, 1, 1e-11 ] )
+        chunk = EnergyGroupStructure( values = [ 20., 18., 16., 14., 10., 5, 1, 1e-11 ] )
 
         verify_chunk( self, chunk )
 
@@ -78,7 +78,7 @@ class Test_NDItk_multigroup_EnergyGroupStructure( unittest.TestCase ) :
         verify_chunk( self, chunk )
 
         # the data is given explicitly for an outgoing particle
-        chunk = EnergyGroupStructure( particle = 1001, boundaries = [ 20., 10., 1e-11 ] )
+        chunk = EnergyGroupStructure( particle = 1001, values = [ 20., 10., 1e-11 ] )
 
         verify_outgoing_chunk( self, chunk )
 

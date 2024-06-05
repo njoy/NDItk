@@ -1,5 +1,5 @@
 /**
- *  @brief Verify the weights
+ *  @brief Verify the heating numbers
  *
  *  The following verification tests are performed:
  *    - there is at least one value

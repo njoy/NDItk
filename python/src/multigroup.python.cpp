@@ -21,6 +21,10 @@ namespace multigroup {
   void wrapHeatingNumbers( python::module&, python::module& );
   void wrapKerma( python::module&, python::module& );
   void wrapAverageFissionEnergyRelease( python::module&, python::module& );
+  void wrapFissionNeutronMultiplicity( python::module&, python::module& );
+  void wrapFissionNeutronProduction( python::module&, python::module& );
+  void wrapFissionNeutronSpectrumMatrix( python::module&, python::module& );
+  void wrapFissionNeutronSpectrumVector( python::module&, python::module& );
   void wrapOutgoingParticleTypes( python::module&, python::module& );
   void wrapOutgoingParticleTransportData( python::module&, python::module& );
   void wrapLegendreMoment( python::module&, python::module& );
@@ -47,6 +51,10 @@ void wrapMultigroup( python::module& module, python::module& viewmodule ) {
   multigroup::wrapHeatingNumbers( submodule, viewmodule );
   multigroup::wrapKerma( submodule, viewmodule );
   multigroup::wrapAverageFissionEnergyRelease( submodule, viewmodule );
+  multigroup::wrapFissionNeutronMultiplicity( submodule, viewmodule );
+  multigroup::wrapFissionNeutronProduction( submodule, viewmodule );
+  multigroup::wrapFissionNeutronSpectrumMatrix( submodule, viewmodule );
+  multigroup::wrapFissionNeutronSpectrumVector( submodule, viewmodule );
   multigroup::wrapOutgoingParticleTypes( submodule, viewmodule );
   multigroup::wrapOutgoingParticleTransportData( submodule, viewmodule );
   multigroup::wrapLegendreMoment( submodule, viewmodule );

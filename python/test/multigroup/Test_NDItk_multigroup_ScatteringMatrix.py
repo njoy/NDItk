@@ -191,4 +191,3 @@ class Test_NDItk_multigroup_ScatteringMatrix( unittest.TestCase ) :
 if __name__ == '__main__' :
 
     unittest.main()
-

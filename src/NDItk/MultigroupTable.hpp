@@ -6,6 +6,7 @@
 // other includes
 #include "tools/Log.hpp"
 #include "NDItk/depletion/ReactionMultiplicities.hpp"
+#include "NDItk/multigroup/FissionType.hpp"
 #include "NDItk/multigroup/Metadata.hpp"
 #include "NDItk/multigroup/EnergyGroupStructure.hpp"
 #include "NDItk/multigroup/Velocities.hpp"
@@ -13,6 +14,10 @@
 #include "NDItk/multigroup/ReactionCrossSections.hpp"
 #include "NDItk/multigroup/TotalCrossSection.hpp"
 #include "NDItk/multigroup/AverageFissionEnergyRelease.hpp"
+#include "NDItk/multigroup/FissionNeutronMultiplicity.hpp"
+#include "NDItk/multigroup/FissionNeutronProduction.hpp"
+#include "NDItk/multigroup/FissionNeutronSpectrumVector.hpp"
+#include "NDItk/multigroup/FissionNeutronSpectrumMatrix.hpp"
 #include "NDItk/multigroup/OutgoingParticleTypes.hpp"
 #include "NDItk/multigroup/OutgoingParticleTransportData.hpp"
 #include "NDItk/multigroup/HeatingNumbers.hpp"
@@ -37,6 +42,18 @@ class MultigroupTable {
   multigroup::ReactionCrossSections xs_;
   multigroup::ScatteringMatrix scattering_;
   multigroup::AverageFissionEnergyRelease release_;
+  multigroup::FissionNeutronMultiplicity nubar_prompt_;
+  multigroup::FissionNeutronMultiplicity nubar_delayed_;
+  multigroup::FissionNeutronMultiplicity nubar_total_;
+  multigroup::FissionNeutronProduction production_prompt_;
+  multigroup::FissionNeutronProduction production_delayed_;
+  multigroup::FissionNeutronProduction production_total_;
+  multigroup::FissionNeutronSpectrumVector chi_vector_prompt_;
+  multigroup::FissionNeutronSpectrumVector chi_vector_delayed_;
+  multigroup::FissionNeutronSpectrumVector chi_vector_total_;
+  multigroup::FissionNeutronSpectrumMatrix chi_matrix_prompt_;
+  multigroup::FissionNeutronSpectrumMatrix chi_matrix_delayed_;
+  multigroup::FissionNeutronSpectrumMatrix chi_matrix_total_;
   multigroup::HeatingNumbers primary_heating_;
   multigroup::Kerma primary_kerma_;
   depletion::ReactionMultiplicities product_multiplicities_all_;
@@ -126,6 +143,78 @@ public:
   averageFissionEnergyRelease() const {
 
     return this->release_;
+  }
+
+  /**
+   *  @brief Return the fission neutron multiplicity record for the requested fission type
+   */
+  const multigroup::FissionNeutronMultiplicity&
+  fissionNeutronMultiplicity( const multigroup::FissionType& type ) const {
+
+    switch ( type ) {
+
+      case multigroup::FissionType::Prompt  : return this->nubar_prompt_;
+      case multigroup::FissionType::Delayed : return this->nubar_delayed_;
+      case multigroup::FissionType::Total   : return this->nubar_total_;
+      default : {
+
+        throw std::runtime_error( "This code is unreachable, contact a developer" );
+      }
+    }
+  }
+
+  /**
+   *  @brief Return the fission neutron production record for the requested fission type
+   */
+  const multigroup::FissionNeutronProduction&
+  fissionNeutronProduction( const multigroup::FissionType& type ) const {
+
+    switch ( type ) {
+
+      case multigroup::FissionType::Prompt  : return this->production_prompt_;
+      case multigroup::FissionType::Delayed : return this->production_delayed_;
+      case multigroup::FissionType::Total   : return this->production_total_;
+      default : {
+
+        throw std::runtime_error( "This code is unreachable, contact a developer" );
+      }
+    }
+  }
+
+  /**
+   *  @brief Return the fission neutron spectrum vector record for the requested fission type
+   */
+  const multigroup::FissionNeutronSpectrumVector&
+  fissionNeutronSpectrumVector( const multigroup::FissionType& type ) const {
+
+    switch ( type ) {
+
+      case multigroup::FissionType::Prompt  : return this->chi_vector_prompt_;
+      case multigroup::FissionType::Delayed : return this->chi_vector_delayed_;
+      case multigroup::FissionType::Total   : return this->chi_vector_total_;
+      default : {
+
+        throw std::runtime_error( "This code is unreachable, contact a developer" );
+      }
+    }
+  }
+
+  /**
+   *  @brief Return the fission neutron spectrum matrix record for the requested fission type
+   */
+  const multigroup::FissionNeutronSpectrumMatrix&
+  fissionNeutronSpectrumMatrix( const multigroup::FissionType& type ) const {
+
+    switch ( type ) {
+
+      case multigroup::FissionType::Prompt  : return this->chi_matrix_prompt_;
+      case multigroup::FissionType::Delayed : return this->chi_matrix_delayed_;
+      case multigroup::FissionType::Total   : return this->chi_matrix_total_;
+      default : {
+
+        throw std::runtime_error( "This code is unreachable, contact a developer" );
+      }
+    }
   }
 
   /**
@@ -278,6 +367,18 @@ public:
     this->xs_.print( iter );
     this->scattering_.print( iter );
     this->release_.print( iter );
+    this->nubar_prompt_.print( iter );
+    this->nubar_delayed_.print( iter );
+    this->nubar_total_.print( iter );
+    this->production_prompt_.print( iter );
+    this->production_delayed_.print( iter );
+    this->production_total_.print( iter );
+    this->chi_vector_prompt_.print( iter );
+    this->chi_vector_delayed_.print( iter );
+    this->chi_vector_total_.print( iter );
+    this->chi_matrix_prompt_.print( iter );
+    this->chi_matrix_delayed_.print( iter );
+    this->chi_matrix_total_.print( iter );
     this->primary_heating_.print( iter );
     this->primary_kerma_.print( iter );
     this->product_multiplicities_all_.print( iter );

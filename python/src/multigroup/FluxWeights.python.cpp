@@ -33,11 +33,11 @@ void wrapFluxWeights( python::module& module, python::module& ) {
   .def(
 
     python::init< std::vector< double > >(),
-    python::arg( "weights" ),
+    python::arg( "values" ),
     "Initialise the record\n\n"
     "Arguments:\n"
-    "    self       the record\n"
-    "    weights    the flux weights"
+    "    self      the record\n"
+    "    values    the flux weight values"
   )
   .def_property_readonly(
 

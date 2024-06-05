@@ -54,6 +54,12 @@ void wrapReactionMultiplicities( python::module& module, python::module& ) {
   )
   .def_property_readonly(
 
+    "type",
+    &Record::type,
+    "The multiplicity type defined by this record"
+  )
+  .def_property_readonly(
+
     "number_reactions",
     &Record::numberReactions,
     "The number of reactions defined by this record"

@@ -21,6 +21,10 @@ void wrapMultigroupTable( python::module& module, python::module& ) {
   using TotalCrossSection = njoy::NDItk::multigroup::TotalCrossSection;
   using ReactionCrossSections = njoy::NDItk::multigroup::ReactionCrossSections;
   using AverageFissionEnergyRelease = njoy::NDItk::multigroup::AverageFissionEnergyRelease;
+  using FissionNeutronMultiplicity = njoy::NDItk::multigroup::FissionNeutronMultiplicity;
+  using FissionNeutronProduction = njoy::NDItk::multigroup::FissionNeutronProduction;
+  using FissionNeutronSpectrumMatrix = njoy::NDItk::multigroup::FissionNeutronSpectrumMatrix;
+  using FissionNeutronSpectrumVector = njoy::NDItk::multigroup::FissionNeutronSpectrumVector;
   using OutgoingParticleTypes = njoy::NDItk::multigroup::OutgoingParticleTypes;
   using OutgoingParticleTransportData = njoy::NDItk::multigroup::OutgoingParticleTransportData;
   using HeatingNumbers = njoy::NDItk::multigroup::HeatingNumbers;
@@ -154,6 +158,46 @@ void wrapMultigroupTable( python::module& module, python::module& ) {
     "average_fission_energy_release",
     &Table::averageFissionEnergyRelease,
     "The average fission energy release record"
+  )
+  .def(
+
+    "fission_neutron_multiplicity",
+    &Table::fissionNeutronMultiplicity,
+    python::arg( "type" ),
+    "The fission neutron multiplicity record for the requested fission type"
+    "Arguments:\n"
+    "    self    the table\n"
+    "    type    the fission type"
+  )
+  .def(
+
+    "fission_neutron_production",
+    &Table::fissionNeutronProduction,
+    python::arg( "type" ),
+    "The fission neutron production record for the requested fission type"
+    "Arguments:\n"
+    "    self    the table\n"
+    "    type    the fission type"
+  )
+  .def(
+
+    "fission_neutron_spectrum_matrix",
+    &Table::fissionNeutronSpectrumMatrix,
+    python::arg( "type" ),
+    "The fission neutron spectrum matrix record for the requested fission type"
+    "Arguments:\n"
+    "    self    the table\n"
+    "    type    the fission type"
+  )
+  .def(
+
+    "fission_neutron_spectrum_vector",
+    &Table::fissionNeutronSpectrumVector,
+    python::arg( "type" ),
+    "The fission neutron spectrum vector record for the requested fission type"
+    "Arguments:\n"
+    "    self    the table\n"
+    "    type    the fission type"
   )
   .def_property_readonly(
 

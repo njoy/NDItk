@@ -3,21 +3,22 @@ private:
 /**
  *  @brief Private intermediate constructor
  */
-ReactionMultiplicities( std::string postfix ) :
-    IntegerListRecord( base::Keyword( postfix.size() > 1
-                       ? std::string( "rprod_" ) + postfix
-                       : std::string( "rprod" ) ) ) {
+ReactionMultiplicities( std::vector< Multiplicities >&& multiplicities,
+                        std::size_t reactions ) :
+    IntegerListRecord( base::Keyword( "rprod" ),
+                       generateData( std::move( multiplicities ) ) ),
+    reactions_( reactions ) {
+
+  this->generateBlocks();
 }
 
 /**
  *  @brief Private intermediate constructor
  */
-ReactionMultiplicities( std::string postfix,
+ReactionMultiplicities( ReactionMultiplicityType type,
                         std::vector< Multiplicities >&& multiplicities,
                         std::size_t reactions ) :
-    IntegerListRecord( base::Keyword( postfix.size() > 1
-                                      ? std::string( "rprod_" ) + postfix
-                                      : std::string( "rprod" ) ),
+    IntegerListRecord( base::Keyword( "rprod", type ),
                        generateData( std::move( multiplicities ) ) ),
     reactions_( reactions ) {
 
@@ -29,13 +30,13 @@ public:
 /**
  *  @brief Default constructor
  */
-ReactionMultiplicities() : ReactionMultiplicities( "" ) {}
+ReactionMultiplicities() : IntegerListRecord( base::Keyword( "rprod" ) ) {}
 
 /**
  *  @brief Default constructor
  */
-ReactionMultiplicities( const ReactionMultiplicityType& type ) :
-    ReactionMultiplicities( getPostFix( type ) ) {}
+ReactionMultiplicities( ReactionMultiplicityType type ) :
+    IntegerListRecord( base::Keyword( "rprod", type ) ) {}
 
 /**
  *  @brief Constructor
@@ -43,7 +44,7 @@ ReactionMultiplicities( const ReactionMultiplicityType& type ) :
  *  @param[in] multiplicities    the multiplicity data
  */
 ReactionMultiplicities( std::vector< Multiplicities > multiplicities ) :
-    ReactionMultiplicities( "", std::move( multiplicities ),
+    ReactionMultiplicities( std::move( multiplicities ),
                             multiplicities.size() ) {}
 
 /**
@@ -52,9 +53,9 @@ ReactionMultiplicities( std::vector< Multiplicities > multiplicities ) :
  *  @param[in] type              the multiplicity type (all, few or rmo)
  *  @param[in] multiplicities    the multiplicity data
  */
-ReactionMultiplicities( const ReactionMultiplicityType& type,
+ReactionMultiplicities( ReactionMultiplicityType type,
                         std::vector< Multiplicities > multiplicities ) :
-    ReactionMultiplicities( getPostFix( type ),
+    ReactionMultiplicities( type,
                             std::move( multiplicities ),
                             multiplicities.size() ) {}
 

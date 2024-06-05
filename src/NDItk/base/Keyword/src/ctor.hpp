@@ -29,10 +29,38 @@ Keyword( std::string keyword ) :
     Keyword( splitKeyword( std::move( keyword ) ) ) {}
 
 /**
- *  @brief Constructor
+ *  @brief Constructor for particle subtypes
  *
  *  @param[in] subtype    the subtype of the record
  *  @param[in] particle   the particle identifier
  */
 Keyword( std::string subtype, unsigned int particle ) :
     Keyword( subtype + "_" + std::to_string( particle ) ) {}
+
+/**
+ *  @brief Constructor for multiplicity subtypes
+ *
+ *  @param[in] subtype    the subtype of the record
+ *  @param[in] type       the multiplicity type
+ */
+Keyword( std::string subtype, depletion::ReactionMultiplicityType type ) :
+    Keyword( subtype +
+             ( type == depletion::ReactionMultiplicityType::All
+               ? std::string( "_all" )
+               : type == depletion::ReactionMultiplicityType::Few
+                 ? std::string( "_few" )
+                 : std::string( "_rmo" ) ) ) {}
+
+/**
+ *  @brief Constructor for fission subtypes
+ *
+ *  @param[in] subtype    the subtype of the record
+ *  @param[in] type       the fission type
+ */
+Keyword( std::string subtype, multigroup::FissionType type ) :
+    Keyword( subtype +
+             ( type == multigroup::FissionType::Prompt
+               ? std::string( "_pr" )
+               : type == multigroup::FissionType::Delayed
+                 ? std::string( "_del" )
+                 : std::string( "_tot" ) ) ) {}

@@ -1,6 +1,8 @@
 #include "NDItk/multigroup/AverageFissionEnergyRelease.hpp"
 #include "NDItk/multigroup/CrossSection.hpp"
 #include "NDItk/multigroup/EnergyGroupStructure.hpp"
+#include "NDItk/multigroup/FissionNeutronMultiplicity.hpp"
+#include "NDItk/multigroup/FissionNeutronProduction.hpp"
 #include "NDItk/multigroup/FluxWeights.hpp"
 #include "NDItk/multigroup/HeatingNumbers.hpp"
 #include "NDItk/multigroup/Kerma.hpp"

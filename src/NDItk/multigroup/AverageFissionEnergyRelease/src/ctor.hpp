@@ -1,11 +1,11 @@
 /**
- *  @brief Default constructor for the primary group structure
+ *  @brief Default constructor for the average fission energy release
  */
 AverageFissionEnergyRelease() : RealListRecord( base::Keyword( "fiss_q" ) ) {}
 
 
 /**
- *  @brief Constructor for the primary group structure
+ *  @brief Constructor for the average fission energy release
  *
  *  @param[in] total       the total energy release (including delayed particles
  *                         and neutrinos)

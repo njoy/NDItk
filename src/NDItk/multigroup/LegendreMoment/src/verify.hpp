@@ -1,9 +1,9 @@
 /**
- *  @brief Verify the cross section data values
+ *  @brief Verify the Legendre moment values
  *
  *  The following verification tests are performed:
  *    - there are at least two values
- *    - the reaction identifier looks to be an integer
+ *    - the matrix is the correct size
  *
  *  @param[in] data    the data values in the Legendre moment subrecord
  */

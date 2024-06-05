@@ -33,21 +33,21 @@ void wrapEnergyGroupStructure( python::module& module, python::module& ) {
   .def(
 
     python::init< std::vector< double > >(),
-    python::arg( "boundaries" ),
+    python::arg( "values" ),
     "Initialise the record\n\n"
     "Arguments:\n"
-    "    self          the record\n"
-    "    boundaries    the group structure boundaries"
+    "    self      the record\n"
+    "    values    the group structure boundary values"
   )
   .def(
 
     python::init< unsigned int, std::vector< double > >(),
-    python::arg( "particle" ), python::arg( "boundaries" ),
+    python::arg( "particle" ), python::arg( "values" ),
     "Initialise the record\n\n"
     "Arguments:\n"
     "    self          the table\n"
     "    particle      the secondary particle identifier\n"
-    "    boundaries    the group structure boundaries"
+    "    values        the group structure boundary values"
   )
   .def_property_readonly(
 

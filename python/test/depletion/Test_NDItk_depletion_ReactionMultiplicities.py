@@ -37,6 +37,7 @@ class Test_NDItk_depletion_ReactionMultiplicities( unittest.TestCase ) :
         def verify_chunk( self, chunk ) :
 
             # verify content
+            self.assertEqual( None, chunk.type )
             self.assertEqual( 2, chunk.number_reactions )
 
             self.assertEqual( True, chunk.has_reaction( 2 ) )
@@ -95,6 +96,7 @@ class Test_NDItk_depletion_ReactionMultiplicities( unittest.TestCase ) :
         def verify_chunk_typed( self, chunk ) :
 
             # verify content
+            self.assertEqual( ReactionMultiplicityType.All, chunk.type )
             self.assertEqual( 2, chunk.number_reactions )
 
             self.assertEqual( True, chunk.has_reaction( 2 ) )

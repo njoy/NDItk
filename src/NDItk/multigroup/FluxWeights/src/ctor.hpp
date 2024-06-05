@@ -6,10 +6,10 @@ FluxWeights() : RealListRecord( base::Keyword( "wgts" ) ) {}
 /**
  *  @brief Constructor
  *
- *  @param[in] weights    the flux weights
+ *  @param[in] values    the flux weight values
  */
-FluxWeights( std::vector< double > weights ) :
-    RealListRecord( base::Keyword( "wgts" ), std::move( weights ) ) {
+FluxWeights( std::vector< double > values ) :
+    RealListRecord( base::Keyword( "wgts" ), std::move( values ) ) {
 
   verify( this->values() );
 }

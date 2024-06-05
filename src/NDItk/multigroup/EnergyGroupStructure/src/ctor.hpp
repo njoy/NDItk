@@ -14,10 +14,10 @@ EnergyGroupStructure( unsigned int particle ) :
 /**
  *  @brief Constructor for the primary group structure
  *
- *  @param[in] boundaries    the group structure boundaries
+ *  @param[in] boundaries    the group structure boundary values
  */
-EnergyGroupStructure( std::vector< double > boundaries ) :
-    RealListRecord( base::Keyword( "e_bounds" ), std::move( boundaries ) ) {
+EnergyGroupStructure( std::vector< double > values ) :
+    RealListRecord( base::Keyword( "e_bounds" ), std::move( values ) ) {
 
   verify( this->values() );
 }
@@ -25,12 +25,12 @@ EnergyGroupStructure( std::vector< double > boundaries ) :
 /**
  *  @brief Constructor for a secondary particle group structure
  *
- *  @param[in] particle      the secondary particle identifier
- *  @param[in] boundaries    the group structure boundaries
+ *  @param[in] particle    the secondary particle identifier
+ *  @param[in] values      the group structure boundary values
  */
-EnergyGroupStructure( unsigned int particle, std::vector< double > boundaries ) :
+EnergyGroupStructure( unsigned int particle, std::vector< double > values ) :
     RealListRecord( base::Keyword( "e_bounds", particle ),
-                    std::move( boundaries ) ) {
+                    std::move( values ) ) {
 
   verify( this->values() );
 }

@@ -5,6 +5,9 @@ MultigroupTable() :
     metadata_(), primary_structure_(),
     velocities_(), weights_(), total_(), xs_(), scattering_(),
     release_(), primary_heating_(), primary_kerma_(),
+    product_multiplicities_all_( depletion::ReactionMultiplicityType::All ),
+    product_multiplicities_few_( depletion::ReactionMultiplicityType::Few ),
+    product_multiplicities_rmo_( depletion::ReactionMultiplicityType::RMO ),
     outgoing_particles_(), outgoing_zaids_(),
     outgoing_structure_(), outgoing_production_(),
     outgoing_heating_(), outgoing_kerma_() {}

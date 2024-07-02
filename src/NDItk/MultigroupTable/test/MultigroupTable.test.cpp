@@ -544,6 +544,8 @@ void verifyChunk( const MultigroupTable& chunk ) {
   CHECK( 7 == chunk.scatteringMatrix().numberOutgoingGroups() );
   CHECK( 2 == chunk.scatteringMatrix().numberLegendreMoments() );
   auto moment = chunk.scatteringMatrix().moment( 0 );
+  CHECK( 7 == moment.matrix().size() );
+  CHECK( 7 == moment.matrix()[0].size() );
   CHECK( 0 == moment.order() );
   CHECK_THAT( 1, WithinRel( moment.matrix()[0][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][1] ) );
@@ -595,6 +597,8 @@ void verifyChunk( const MultigroupTable& chunk ) {
   CHECK_THAT( 0, WithinRel( moment.matrix()[6][5] ) );
   CHECK_THAT( 1, WithinRel( moment.matrix()[6][6] ) );
   moment = chunk.scatteringMatrix().moment( 1 );
+  CHECK( 7 == moment.matrix().size() );
+  CHECK( 7 == moment.matrix()[0].size() );
   CHECK( 1 == moment.order() );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][1] ) );
@@ -744,6 +748,8 @@ void verifyChunk( const MultigroupTable& chunk ) {
   CHECK( 3 == production.numberOutgoingGroups() );
   CHECK( 2 == production.numberLegendreMoments() );
   moment = production.moment( 0 );
+  CHECK( 7 == moment.matrix().size() );
+  CHECK( 3 == moment.matrix()[0].size() );
   CHECK( 0 == moment.order() );
   CHECK_THAT( 1, WithinRel( moment.matrix()[0][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][1] ) );
@@ -767,6 +773,8 @@ void verifyChunk( const MultigroupTable& chunk ) {
   CHECK_THAT( 0, WithinRel( moment.matrix()[6][1] ) );
   CHECK_THAT( 1, WithinRel( moment.matrix()[6][2] ) );
   moment = production.moment( 1 );
+  CHECK( 7 == moment.matrix().size() );
+  CHECK( 3 == moment.matrix()[0].size() );
   CHECK( 1 == moment.order() );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][1] ) );
@@ -800,6 +808,8 @@ void verifyChunk( const MultigroupTable& chunk ) {
   CHECK( 2 == production.numberOutgoingGroups() );
   CHECK( 2 == production.numberLegendreMoments() );
   moment = production.moment( 0 );
+  CHECK( 7 == moment.matrix().size() );
+  CHECK( 2 == moment.matrix()[0].size() );
   CHECK( 0 == moment.order() );
   CHECK_THAT( 1, WithinRel( moment.matrix()[0][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][1] ) );
@@ -816,6 +826,8 @@ void verifyChunk( const MultigroupTable& chunk ) {
   CHECK_THAT( 1, WithinRel( moment.matrix()[6][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[6][1] ) );
   moment = production.moment( 1 );
+  CHECK( 7 == moment.matrix().size() );
+  CHECK( 2 == moment.matrix()[0].size() );
   CHECK( 1 == moment.order() );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][0] ) );
   CHECK_THAT( 1, WithinRel( moment.matrix()[0][1] ) );

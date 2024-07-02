@@ -5,6 +5,7 @@
 
 // other includes
 #include "tools/Log.hpp"
+#include "NDItk/depletion/ReactionMultiplicities.hpp"
 #include "NDItk/multigroup/Metadata.hpp"
 #include "NDItk/multigroup/EnergyGroupStructure.hpp"
 #include "NDItk/multigroup/Velocities.hpp"
@@ -38,6 +39,9 @@ class MultigroupTable {
   multigroup::AverageFissionEnergyRelease release_;
   multigroup::HeatingNumbers primary_heating_;
   multigroup::Kerma primary_kerma_;
+  depletion::ReactionMultiplicities product_multiplicities_all_;
+  depletion::ReactionMultiplicities product_multiplicities_few_;
+  depletion::ReactionMultiplicities product_multiplicities_rmo_;
   multigroup::OutgoingParticleTypes outgoing_particles_;
   multigroup::OutgoingParticleTransportData outgoing_zaids_;
   std::vector< multigroup::EnergyGroupStructure > outgoing_structure_;
@@ -276,6 +280,9 @@ public:
     this->release_.print( iter );
     this->primary_heating_.print( iter );
     this->primary_kerma_.print( iter );
+    this->product_multiplicities_all_.print( iter );
+    this->product_multiplicities_few_.print( iter );
+    this->product_multiplicities_rmo_.print( iter );
     this->outgoing_particles_.print( iter );
     this->outgoing_zaids_.print( iter );
     for ( const auto& entry : this->outgoing_structure_ ) { entry.print( iter ); }

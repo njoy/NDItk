@@ -7,10 +7,14 @@ private:
  */
 Keyword( std::tuple< std::string,
                      std::optional< std::string >,
-                     std::optional< int > > tuple ) :
+                     std::optional< int >,
+                     std::optional< depletion::ReactionMultiplicityType >,
+                     std::optional< multigroup::FissionType > > tuple ) :
     keyword_( std::move( std::get< 0 >( tuple ) ) ),
     subtype_( std::move( std::get< 1 >( tuple ) ) ),
-    particle_( std::move( std::get< 2 >( tuple ) ) ) {}
+    particle_( std::move( std::get< 2 >( tuple ) ) ),
+    multiplicity_( std::move( std::get< 3 >( tuple ) ) ),
+    fission_( std::move( std::get< 4 >( tuple ) ) ) {}
 
 public:
 

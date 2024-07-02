@@ -182,6 +182,51 @@ void read( Iterator& iter, const Iterator& end ) {
 
       readOutgoingProductionMatrix( keyword, iter, end );
     }
+    // reaction product multiplicities: all
+    else if ( keyword == this->product_multiplicities_all_.keyword() ) {
+
+      if ( this->metadata_.numberReactions().has_value() ) {
+
+        readRecord( this->product_multiplicities_all_, iter, end,
+                    this->metadata_.numberReactions().value() );
+      }
+      else {
+
+        Log::error( "Metadata required for the \'\' record was not found", keyword );
+        Log::info( "Required metadata is missing: number of reactions" );
+        throw std::exception();
+      }
+    }
+    // reaction product multiplicities: few
+    else if ( keyword == this->product_multiplicities_few_.keyword() ) {
+
+      if ( this->metadata_.numberReactions().has_value() ) {
+
+        readRecord( this->product_multiplicities_few_, iter, end,
+                    this->metadata_.numberReactions().value() );
+      }
+      else {
+
+        Log::error( "Metadata required for the \'\' record was not found", keyword );
+        Log::info( "Required metadata is missing: number of reactions" );
+        throw std::exception();
+      }
+    }
+    // reaction product multiplicities: rmo
+    else if ( keyword == this->product_multiplicities_rmo_.keyword() ) {
+
+      if ( this->metadata_.numberReactions().has_value() ) {
+
+        readRecord( this->product_multiplicities_rmo_, iter, end,
+                    this->metadata_.numberReactions().value() );
+      }
+      else {
+
+        Log::error( "Metadata required for the \'\' record was not found", keyword );
+        Log::info( "Required metadata is missing: number of reactions" );
+        throw std::exception();
+      }
+    }
     // unknown or end keyword
     else {
 

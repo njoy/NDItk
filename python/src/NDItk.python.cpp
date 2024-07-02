@@ -10,6 +10,7 @@ namespace python = pybind11;
 // declarations
 
 // declarations - record and subrecord subpackages
+void wrapDepletion( python::module&, python::module& );
 void wrapMultigroup( python::module&, python::module& );
 
 // declarations - NDI table types
@@ -33,6 +34,7 @@ PYBIND11_MODULE( NDItk, module ) {
   );
 
   // record and subrecord subpackages
+  wrapDepletion( module, viewmodule );
   wrapMultigroup( module, viewmodule );
 
   // wrap ACE table types

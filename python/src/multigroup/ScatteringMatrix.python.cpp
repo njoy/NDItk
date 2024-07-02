@@ -103,7 +103,7 @@ void wrapScatteringMatrix( python::module& module, python::module& ) {
     "from_string",
     [] ( const std::string& string, unsigned int incident,
          unsigned int number ) -> Record
-       { return readWithSubtype< Record >( string, incident, number ); },
+       { return readWithParticleSubtype< Record >( string, incident, number ); },
     python::arg( "string" ), python::arg( "incident" ),
     python::arg( "number" ),
     "Read the record from a string\n\n"
@@ -119,7 +119,7 @@ void wrapScatteringMatrix( python::module& module, python::module& ) {
     "from_string",
     [] ( const std::string& string, unsigned int incident,
          unsigned int outgoing, unsigned int number ) -> Record
-       { return readWithSubtype< Record >( string, incident, outgoing, number ); },
+       { return readWithParticleSubtype< Record >( string, incident, outgoing, number ); },
     python::arg( "string" ), python::arg( "incident" ),
     python::arg( "outgoing" ), python::arg( "number" ),
     "Read the record from a string\n\n"

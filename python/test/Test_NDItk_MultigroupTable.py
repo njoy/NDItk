@@ -1,6 +1,7 @@
 # standard imports
 import unittest
 import os
+import os.path
 
 # third party imports
 
@@ -541,7 +542,7 @@ class Test_NDItk_MultigroupTable( unittest.TestCase ) :
         chunk.to_file( 'test.txt' )
         chunk = MultigroupTable.from_file( 'test.txt' )
         verify_chunk( self, chunk )
-        os.remove( 'test.txt' )
+        if os.path.isfile( 'test.txt' ) : os.remove( 'test.txt' )
 
 if __name__ == '__main__' :
 

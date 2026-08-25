@@ -1,5 +1,7 @@
 #include "NDItk/multigroup/AverageFissionEnergyRelease.hpp"
 #include "NDItk/multigroup/CrossSection.hpp"
+#include "NDItk/multigroup/DownScatteringLegendreMoment.hpp"
+#include "NDItk/multigroup/DownScatteringMatrix.hpp"
 #include "NDItk/multigroup/EnergyGroupStructure.hpp"
 #include "NDItk/multigroup/FissionNeutronMultiplicity.hpp"
 #include "NDItk/multigroup/FissionNeutronProduction.hpp"

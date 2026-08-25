@@ -1,5 +1,5 @@
-#ifndef NJOY_NDITK_MULTIGROUP_SCATTERINGMATRICES
-#define NJOY_NDITK_MULTIGROUP_SCATTERINGMATRICES
+#ifndef NJOY_NDITK_MULTIGROUP_DOWNSCATTERINGMATRIX
+#define NJOY_NDITK_MULTIGROUP_DOWNSCATTERINGMATRIX
 
 // system includes
 #include <algorithm>
@@ -8,29 +8,29 @@
 // other includes
 #include "tools/Log.hpp"
 #include "NDItk/base/RealListRecord.hpp"
-#include "NDItk/multigroup/LegendreMoment.hpp"
+#include "NDItk/multigroup/DownScatteringLegendreMoment.hpp"
 
 namespace njoy {
 namespace NDItk {
 namespace multigroup {
 
 /**
- *  @brief A scattering matrix record for multigroup neutron data
+ *  @brief A scattering matrix record for multigroup neutron data using
+ *         upper triangular matrices (deprecated)
  */
-class ScatteringMatrix : protected base::RealListRecord {
+class DownScatteringMatrix : protected base::RealListRecord {
 
   /* fields */
 
-  std::vector< LegendreMoment > moments_;
-  unsigned int incident_;
-  unsigned int outgoing_;
+  std::vector< DownScatteringLegendreMoment > moments_;
+  unsigned int groups_;
   unsigned int number_moments_;
 
   /* auxiliary functions */
 
-  #include "NDItk/multigroup/ScatteringMatrix/src/verify.hpp"
-  #include "NDItk/multigroup/ScatteringMatrix/src/generateData.hpp"
-  #include "NDItk/multigroup/ScatteringMatrix/src/generateBlocks.hpp"
+  #include "NDItk/multigroup/DownScatteringMatrix/src/verify.hpp"
+  #include "NDItk/multigroup/DownScatteringMatrix/src/generateData.hpp"
+  #include "NDItk/multigroup/DownScatteringMatrix/src/generateBlocks.hpp"
 
   using base::RealListRecord::key;
 
@@ -38,16 +38,24 @@ public:
 
   /* constructor */
 
-  #include "NDItk/multigroup/ScatteringMatrix/src/ctor.hpp"
+  #include "NDItk/multigroup/DownScatteringMatrix/src/ctor.hpp"
 
   /* methods */
+
+  /**
+   *  @brief Return the number of groups defined in this record
+   */
+  unsigned int numberGroups() const {
+
+    return this->groups_;
+  }
 
   /**
    *  @brief Return the number of primary groups defined in this record
    */
   unsigned int numberPrimaryGroups() const {
 
-      return this->incident_;
+    return this->numberGroups();
   }
 
   /**
@@ -55,7 +63,7 @@ public:
    */
   unsigned int numberOutgoingGroups() const {
 
-      return this->outgoing_;
+    return this->numberGroups();
   }
 
   /**
@@ -63,13 +71,13 @@ public:
    */
   unsigned int numberLegendreMoments() const {
 
-      return this->number_moments_;
+    return this->number_moments_;
   }
 
   /**
    *  @brief Return the Legendre moments
    */
-  const std::vector< LegendreMoment >& moments() const {
+  const std::vector< DownScatteringLegendreMoment >& moments() const {
 
     return this->moments_;
   }
@@ -88,11 +96,11 @@ public:
   }
 
   /**
-   *  @brief Return the cross section data for a given reaction
+   *  @brief Return the Legendre moment for a given order
    *
-   *  @param[in] reaction   the reaction to look for
+   *  @param[in] order   the order to look for
    */
-  const LegendreMoment& moment( int order ) const {
+  const DownScatteringLegendreMoment& moment( int order ) const {
 
     auto iter = std::find_if( this->moments().begin(), this->moments().end(),
                               [order] ( const auto& entry )
@@ -116,8 +124,8 @@ public:
   using base::RealListRecord::begin;
   using base::RealListRecord::end;
 
-  #include "NDItk/multigroup/ScatteringMatrix/src/read.hpp"
-  #include "NDItk/multigroup/ScatteringMatrix/src/print.hpp"
+  #include "NDItk/multigroup/DownScatteringMatrix/src/read.hpp"
+  #include "NDItk/multigroup/DownScatteringMatrix/src/print.hpp"
 };
 
 } // multigroup namespace

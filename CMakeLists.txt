@@ -27,7 +27,7 @@ set( CMAKE_CXX_STANDARD_REQUIRED YES )
 
 cmake_dependent_option(
   NDItk.tests
-  "Build the NDItk unit tests and integrate with ctest" ON
+  "Build the NDItk unit tests and integrate with ctest" OFF
   "BUILD_TESTING AND NOT ${subproject}" OFF
 )
 
@@ -86,7 +86,7 @@ if ( NDItk.python )
   add_subdirectory( python )
 endif()
 
-if( ${NDItk.tests} )
+if( NDItk.tests )
   add_subdirectory( test )
 endif()
 

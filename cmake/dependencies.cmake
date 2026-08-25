@@ -1,5 +1,6 @@
 cmake_minimum_required( VERSION 3.27 )
-include( FetchContent )
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/.cmake)
+include( shacl_FetchContent )
 
 shacl_FetchContent_Declare( tools
     GIT_REPOSITORY  ../../njoy/tools

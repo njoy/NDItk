@@ -38,6 +38,8 @@ add_python_test( multigroup.Multiplicities                multigroup/Test_NDItk_
 add_python_test( multigroup.ReactionMultiplicities        multigroup/Test_NDItk_multigroup_ReactionMultiplicities.py )
 add_python_test( multigroup.Metadata                      multigroup/Test_NDItk_multigroup_Metadata.py )
 add_python_test( multigroup.CrossSection                  multigroup/Test_NDItk_multigroup_CrossSection.py )
+add_python_test( multigroup.DownScatteringLegendreMoment  multigroup/Test_NDItk_multigroup_DownScatteringLegendreMoment.py )
+add_python_test( multigroup.DownScatteringMatrix          multigroup/Test_NDItk_multigroup_DownScatteringMatrix.py )
 add_python_test( multigroup.FluxWeights                   multigroup/Test_NDItk_multigroup_FluxWeights.py )
 add_python_test( multigroup.EnergyGroupStructure          multigroup/Test_NDItk_multigroup_EnergyGroupStructure.py )
 add_python_test( multigroup.ReactionCrossSections         multigroup/Test_NDItk_multigroup_ReactionCrossSections.py )

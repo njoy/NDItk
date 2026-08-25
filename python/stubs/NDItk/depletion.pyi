@@ -3,7 +3,7 @@ Depletion NDI records and subrecords
 """
 from __future__ import annotations
 import typing
-__all__ = ['IncidentParticle', 'Metadata', 'Multiplicities', 'Product', 'Target']
+__all__: list[str] = ['IncidentParticle', 'Metadata', 'Multiplicities', 'Product', 'Target']
 class IncidentParticle:
     """
     An incident particle record for depletion data

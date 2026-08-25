@@ -2,7 +2,7 @@
 thermonuclear NDI records and subrecords
 """
 from __future__ import annotations
-__all__ = ['InterpolationRegions', 'Temperatures']
+__all__: list[str] = ['InterpolationRegions', 'Temperatures']
 class InterpolationRegions:
     """
     A subrecord for representing interpolate data regions

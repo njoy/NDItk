@@ -14,6 +14,7 @@ using namespace njoy::NDItk;
 std::string chunk();
 void verifyChunk( const MultigroupTable& );
 std::string chunkWithMissingRecords();
+std::string chunkWithDownScatteringMatrix();
 
 SCENARIO( "MultigroupTable" ) {
 
@@ -50,13 +51,13 @@ SCENARIO( "MultigroupTable" ) {
                                                         0, 0, 0, 0, 1, 0, 0,
                                                         0, 0, 0, 0, 0, 1, 0,
                                                         0, 0, 0, 0, 0, 0, 1 }, 7 },
-                                                 { 1, { 0, 0, 0, 0, 0, 0, 1,
-                                                        0, 0, 0, 0, 0, 1, 0,
-                                                        0, 0, 0, 0, 1, 0, 0,
-                                                        0, 0, 0, 1, 0, 0, 0,
-                                                        0, 0, 1, 0, 0, 0, 0,
-                                                        0, 1, 0, 0, 0, 0, 0,
-                                                        1, 0, 0, 0, 0, 0, 0 }, 7 } } );
+                                                 { 1, { 2, 0, 0, 0, 0, 0, 0,
+                                                        0, 2, 0, 0, 0, 0, 0,
+                                                        0, 0, 2, 0, 0, 0, 0,
+                                                        0, 0, 0, 2, 0, 0, 0,
+                                                        0, 0, 0, 0, 2, 0, 0,
+                                                        0, 0, 0, 0, 0, 2, 0,
+                                                        0, 0, 0, 0, 0, 0, 2 }, 7 } } );
       multigroup::AverageFissionEnergyRelease release( 202.827, 181.238898, 4.827645,
                                                        7.281253, 6.5, 169.13 );
       multigroup::OutgoingParticleTypes types( { 0, 1001 } );
@@ -130,10 +131,36 @@ SCENARIO( "MultigroupTable" ) {
       } // THEN
     } // WHEN
 
-    WHEN( "the data is read using iterators" ) {
+    WHEN( "the data is read from a string using iterators" ) {
 
       auto iter = record.begin();
       auto end = record.end();
+
+      MultigroupTable chunk;
+      chunk.read( iter, end );
+
+      THEN( "a MultigroupTable can be constructed and members can "
+            "be tested" ) {
+
+        verifyChunk( chunk );
+      } // THEN
+
+      THEN( "the record can be printed" ) {
+
+        std::string buffer;
+        auto output = std::back_inserter( buffer );
+        chunk.print( output );
+
+        CHECK( buffer == record );
+      } // THEN
+    } // WHEN
+
+    WHEN( "the data is read from a string with a deprecated DownScatteringMatrix "
+          "using iterators" ) {
+
+      auto deprecated = chunkWithDownScatteringMatrix();
+      auto iter = deprecated.begin();
+      auto end = deprecated.end();
 
       MultigroupTable chunk;
       chunk.read( iter, end );
@@ -333,16 +360,16 @@ std::string chunk() {
          "    1 0 0 0 0\n"
          "    0 0 0 1\n"
          "    1\n"
+         "    2 0 0 0 0\n"
+         "    0 0 0 2 0\n"
          "    0 0 0 0 0\n"
-         "    0 1 0 0 0\n"
-         "    0 0 1 0 0\n"
-         "    0 0 0 1 0\n"
-         "    0 0 0 0 1\n"
+         "    0 2 0 0 0\n"
+         "    0 0 0 0 2\n"
          "    0 0 0 0 0\n"
-         "    1 0 0 0 0\n"
-         "    0 1 0 0 0\n"
-         "    0 0 1 0 0\n"
-         "    0 0 0 0\n"
+         "    0 0 2 0 0\n"
+         "    0 0 0 0 0\n"
+         "    2 0 0 0 0\n"
+         "    0 0 0 2\n"
          "fiss_q\n"
          "    181.238898 202.827 6.5 7.281253 169.13\n"
          "    4.827645\n"
@@ -600,55 +627,55 @@ void verifyChunk( const MultigroupTable& chunk ) {
   CHECK( 7 == moment.matrix().size() );
   CHECK( 7 == moment.matrix()[0].size() );
   CHECK( 1 == moment.order() );
-  CHECK_THAT( 0, WithinRel( moment.matrix()[0][0] ) );
+  CHECK_THAT( 2, WithinRel( moment.matrix()[0][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][1] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][2] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][3] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][4] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[0][5] ) );
-  CHECK_THAT( 1, WithinRel( moment.matrix()[0][6] ) );
+  CHECK_THAT( 0, WithinRel( moment.matrix()[0][6] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[1][0] ) );
-  CHECK_THAT( 0, WithinRel( moment.matrix()[1][1] ) );
+  CHECK_THAT( 2, WithinRel( moment.matrix()[1][1] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[1][2] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[1][3] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[1][4] ) );
-  CHECK_THAT( 1, WithinRel( moment.matrix()[1][5] ) );
+  CHECK_THAT( 0, WithinRel( moment.matrix()[1][5] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[1][6] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[2][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[2][1] ) );
-  CHECK_THAT( 0, WithinRel( moment.matrix()[2][2] ) );
+  CHECK_THAT( 2, WithinRel( moment.matrix()[2][2] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[2][3] ) );
-  CHECK_THAT( 1, WithinRel( moment.matrix()[2][4] ) );
+  CHECK_THAT( 0, WithinRel( moment.matrix()[2][4] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[2][5] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[2][6] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[3][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[3][1] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[3][2] ) );
-  CHECK_THAT( 1, WithinRel( moment.matrix()[3][3] ) );
+  CHECK_THAT( 2, WithinRel( moment.matrix()[3][3] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[3][4] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[3][5] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[3][6] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[4][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[4][1] ) );
-  CHECK_THAT( 1, WithinRel( moment.matrix()[4][2] ) );
+  CHECK_THAT( 0, WithinRel( moment.matrix()[4][2] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[4][3] ) );
-  CHECK_THAT( 0, WithinRel( moment.matrix()[4][4] ) );
+  CHECK_THAT( 2, WithinRel( moment.matrix()[4][4] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[4][5] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[4][6] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[5][0] ) );
-  CHECK_THAT( 1, WithinRel( moment.matrix()[5][1] ) );
+  CHECK_THAT( 0, WithinRel( moment.matrix()[5][1] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[5][2] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[5][3] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[5][4] ) );
-  CHECK_THAT( 0, WithinRel( moment.matrix()[5][5] ) );
+  CHECK_THAT( 2, WithinRel( moment.matrix()[5][5] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[5][6] ) );
-  CHECK_THAT( 1, WithinRel( moment.matrix()[6][0] ) );
+  CHECK_THAT( 0, WithinRel( moment.matrix()[6][0] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[6][1] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[6][2] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[6][3] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[6][4] ) );
   CHECK_THAT( 0, WithinRel( moment.matrix()[6][5] ) );
-  CHECK_THAT( 0, WithinRel( moment.matrix()[6][6] ) );
+  CHECK_THAT( 2, WithinRel( moment.matrix()[6][6] ) );
 
   // average fission energy release
   CHECK( "fiss_q" == chunk.averageFissionEnergyRelease().keyword() );
@@ -961,5 +988,131 @@ std::string chunkWithMissingRecords() {
          "fiss_q\n"
          "    181.238898 202.827 6.5 7.281253 169.13\n"
          "    4.827645\n"
+         "end\n";
+}
+
+std::string chunkWithDownScatteringMatrix() {
+
+  return "zaid\n"
+         "    92235.711nm\n"
+         "info\n"
+         "    this is some information for the table\n"
+         "library_name\n"
+         "    mendf71x\n"
+         "date_source\n"
+         "    12/22/2011\n"
+         "date_processed\n"
+         "    08/07/2013\n"
+         "awr\n"
+         "    233.0248\n"
+         "at_wgt\n"
+         "    235.043937521619\n"
+         "temp\n"
+         "    2.53e-08\n"
+         "sig_0\n"
+         "    10000000000\n"
+         "num_grps\n"
+         "    7\n"
+         "num_reac\n"
+         "    2\n"
+         "pn_order\n"
+         "    2\n"
+         "num_sec_parts\n"
+         "    2\n"
+         "num_grps_0\n"
+         "    3\n"
+         "num_grps_1001\n"
+         "    2\n"
+         "pn_order_0\n"
+         "    2\n"
+         "pn_order_1001\n"
+         "    2\n"
+         "e_bounds\n"
+         "    20 18.123456789 16.0000000000001 14 10\n"
+         "    5 1 1e-11\n"
+         "vel\n"
+         "    2.1 2.2 2.25 2.05 2.15\n"
+         "    2.04 2.06\n"
+         "wgts\n"
+         "    0.1 0.2 0.25 0.05 0.15\n"
+         "    0.04 0.06\n"
+         "sig_tot\n"
+         "    1.1 1.2 1.25 1.05 1.15\n"
+         "    1.04 1.06\n"
+         "sig_reac\n"
+         "    2 0\n"
+         "    10 20 30 40 50\n"
+         "    60 70\n"
+         "    16 1.1234567\n"
+         "    1 2 3 4 5\n"
+         "    6 7\n"
+         "pn_down_full\n"
+         "    0\n"
+         "    0.999999999999 1e-13 0 0 0 0 0\n"
+         "     1 0 0 0 0 0\n"
+         "       1 0 0 0 0\n"
+         "         1 0 0 0\n"
+         "           1 0 0 \n"
+         "             1 0\n"
+         "               1\n"
+         "    1\n"
+         "    2 0 0 0 0 0 0\n"
+         "      2 0 0 0 0 0\n"
+         "        2 0 0 0 0\n"
+         "          2 0 0 0\n"
+         "            2 0 0\n"
+         "              2 0\n"
+         "                2\n"
+         "fiss_q\n"
+         "    181.238898 202.827 6.5 7.281253 169.13\n"
+         "    4.827645\n"
+         "heating\n"
+         "    11 22 33 44 55\n"
+         "    66 77\n"
+         "kerma\n"
+         "    110 220 330 440 550\n"
+         "    660 770\n"
+         "sec_part_types\n"
+         "    0 1001\n"
+         "sec_part_zaids\n"
+         "    92000 92235.proton\n"
+         "e_bounds_0\n"
+         "    20 10 5 1e-11\n"
+         "e_bounds_1001\n"
+         "    20 10 1e-11\n"
+         "pn_prod_full_0\n"
+         "    0\n"
+         "    1 0 0 0 1\n"
+         "    0 0 0 1 0\n"
+         "    1 0 1 0 0\n"
+         "    0 1 0 0 0\n"
+         "    1\n"
+         "    1\n"
+         "    0 0 1 0 1\n"
+         "    0 1 0 0 0\n"
+         "    1 0 0 0 1\n"
+         "    0 1 0 1 0\n"
+         "    0\n"
+         "pn_prod_full_1001\n"
+         "    0\n"
+         "    1 0 0 1 1\n"
+         "    0 0 1 1 0\n"
+         "    0 1 1 0\n"
+         "    1\n"
+         "    0 1 1 0 0\n"
+         "    1 1 0 0 1\n"
+         "    1 0 0 1\n"
+         "heating_0\n"
+         "    21 11 5.1 3 4\n"
+         "    6 7\n"
+         "heating_1001\n"
+         "    25 15 9.1 7 8\n"
+         "    10 11\n"
+         "kerma_0\n"
+         "    210 110 51 30 40\n"
+         "    60 70\n"
+         "kerma_1001\n"
+         "    250 150 91 70 80\n"
+         "    100 110\n"
          "end\n";
 }

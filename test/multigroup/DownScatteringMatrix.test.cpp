@@ -306,31 +306,31 @@ void verifyChunk( const DownScatteringMatrix& chunk ) {
   CHECK( true == converted.hasMoment( 0 ) );
   CHECK( true == converted.hasMoment( 1 ) );
 
-  auto moment = converted.moment( 0 );
-  CHECK( 0 == moment.order() );
-  CHECK( 3 == moment.numberPrimaryGroups() );
-  CHECK( 3 == moment.numberOutgoingGroups() );
-  CHECK_THAT( 1, WithinRel( moment.matrix()[0][0] ) );
-  CHECK_THAT( 2, WithinRel( moment.matrix()[0][1] ) );
-  CHECK_THAT( 3, WithinRel( moment.matrix()[0][2] ) );
-  CHECK_THAT( 0, WithinRel( moment.matrix()[1][0] ) );
-  CHECK_THAT( 4, WithinRel( moment.matrix()[1][1] ) );
-  CHECK_THAT( 5, WithinRel( moment.matrix()[1][2] ) );
-  CHECK_THAT( 0, WithinRel( moment.matrix()[2][0] ) );
-  CHECK_THAT( 0, WithinRel( moment.matrix()[2][1] ) );
-  CHECK_THAT( 6, WithinRel( moment.matrix()[2][2] ) );
+  auto converted_moment = converted.moment( 0 );
+  CHECK( 0 == converted_moment.order() );
+  CHECK( 3 == converted_moment.numberPrimaryGroups() );
+  CHECK( 3 == converted_moment.numberOutgoingGroups() );
+  CHECK_THAT( 1, WithinRel( converted_moment.matrix()[0][0] ) );
+  CHECK_THAT( 2, WithinRel( converted_moment.matrix()[0][1] ) );
+  CHECK_THAT( 3, WithinRel( converted_moment.matrix()[0][2] ) );
+  CHECK_THAT( 0, WithinRel( converted_moment.matrix()[1][0] ) );
+  CHECK_THAT( 4, WithinRel( converted_moment.matrix()[1][1] ) );
+  CHECK_THAT( 5, WithinRel( converted_moment.matrix()[1][2] ) );
+  CHECK_THAT( 0, WithinRel( converted_moment.matrix()[2][0] ) );
+  CHECK_THAT( 0, WithinRel( converted_moment.matrix()[2][1] ) );
+  CHECK_THAT( 6, WithinRel( converted_moment.matrix()[2][2] ) );
 
-  moment = converted.moment( 1 );
-  CHECK( 1 == moment.order() );
-  CHECK_THAT( 11, WithinRel( moment.matrix()[0][0] ) );
-  CHECK_THAT( 12, WithinRel( moment.matrix()[0][1] ) );
-  CHECK_THAT( 13, WithinRel( moment.matrix()[0][2] ) );
-  CHECK_THAT(  0, WithinRel( moment.matrix()[1][0] ) );
-  CHECK_THAT( 14, WithinRel( moment.matrix()[1][1] ) );
-  CHECK_THAT( 15, WithinRel( moment.matrix()[1][2] ) );
-  CHECK_THAT(  0, WithinRel( moment.matrix()[2][0] ) );
-  CHECK_THAT(  0, WithinRel( moment.matrix()[2][1] ) );
-  CHECK_THAT( 16, WithinRel( moment.matrix()[2][2] ) );
+  converted_moment = converted.moment( 1 );
+  CHECK( 1 == converted_moment.order() );
+  CHECK_THAT( 11, WithinRel( converted_moment.matrix()[0][0] ) );
+  CHECK_THAT( 12, WithinRel( converted_moment.matrix()[0][1] ) );
+  CHECK_THAT( 13, WithinRel( converted_moment.matrix()[0][2] ) );
+  CHECK_THAT(  0, WithinRel( converted_moment.matrix()[1][0] ) );
+  CHECK_THAT( 14, WithinRel( converted_moment.matrix()[1][1] ) );
+  CHECK_THAT( 15, WithinRel( converted_moment.matrix()[1][2] ) );
+  CHECK_THAT(  0, WithinRel( converted_moment.matrix()[2][0] ) );
+  CHECK_THAT(  0, WithinRel( converted_moment.matrix()[2][1] ) );
+  CHECK_THAT( 16, WithinRel( converted_moment.matrix()[2][2] ) );
 }
 
 DownScatteringMatrix makeDummyRecord() {

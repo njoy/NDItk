@@ -6,6 +6,9 @@
 template< typename Iterator >
 void read( Iterator& iter, const Iterator& end ) {
 
+  // deprecated records
+  multigroup::DownScatteringMatrix downScattering;
+
   std::string keyword;
   while ( ( keyword != "end" ) && ( iter != end ) ) {
 
@@ -101,6 +104,29 @@ void read( Iterator& iter, const Iterator& end ) {
            this->metadata_.numberLegendreMoments().has_value() ) {
 
         readRecord( this->scattering_, iter, end,
+                    this->metadata_.numberGroups().value(),
+                    this->metadata_.numberLegendreMoments().value() );
+      }
+      else {
+
+        Log::error( "Metadata required for the \'\' record was not found", keyword );
+        if ( ! this->metadata_.numberGroups().has_value() ) {
+
+          Log::info( "Required metadata is missing: number of groups in the primary group structure" );
+        }
+        if ( ! this->metadata_.numberLegendreMoments().has_value() ) {
+
+          Log::info( "Required metadata is missing: number of Legendre moments" );
+        }
+        throw std::exception();
+      }
+    }
+    else if ( keyword == downScattering.keyword() ) {
+
+      if ( this->metadata_.numberGroups().has_value() &&
+           this->metadata_.numberLegendreMoments().has_value() ) {
+
+        readRecord( downScattering, iter, end,
                     this->metadata_.numberGroups().value(),
                     this->metadata_.numberLegendreMoments().value() );
       }
@@ -411,5 +437,6 @@ void read( Iterator& iter, const Iterator& end ) {
       ++iter;
     }
   }
+  this->resolveDeprecation( downScattering );
   this->verify();
 };

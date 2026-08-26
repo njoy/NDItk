@@ -12,6 +12,7 @@ using Catch::Matchers::WithinRel;
 using namespace njoy::NDItk;
 using DownScatteringMatrix = multigroup::DownScatteringMatrix;
 using DownScatteringLegendreMoment = multigroup::DownScatteringLegendreMoment;
+using ScatteringMatrix = multigroup::ScatteringMatrix;
 
 std::string chunk();
 void verifyChunk( const DownScatteringMatrix& );
@@ -281,6 +282,45 @@ void verifyChunk( const DownScatteringMatrix& chunk ) {
   CHECK_THAT( 6, WithinRel( moment.matrix()[2][2] ) );
 
   moment = chunk.moment( 1 );
+  CHECK( 1 == moment.order() );
+  CHECK_THAT( 11, WithinRel( moment.matrix()[0][0] ) );
+  CHECK_THAT( 12, WithinRel( moment.matrix()[0][1] ) );
+  CHECK_THAT( 13, WithinRel( moment.matrix()[0][2] ) );
+  CHECK_THAT(  0, WithinRel( moment.matrix()[1][0] ) );
+  CHECK_THAT( 14, WithinRel( moment.matrix()[1][1] ) );
+  CHECK_THAT( 15, WithinRel( moment.matrix()[1][2] ) );
+  CHECK_THAT(  0, WithinRel( moment.matrix()[2][0] ) );
+  CHECK_THAT(  0, WithinRel( moment.matrix()[2][1] ) );
+  CHECK_THAT( 16, WithinRel( moment.matrix()[2][2] ) );
+
+  ScatteringMatrix converted = chunk.toScatteringMatrix();
+
+  CHECK( "pn_full" == converted.keyword() );
+  CHECK( std::nullopt == converted.particle() );
+  CHECK( false == converted.empty() );
+
+  CHECK( 3 == converted.numberPrimaryGroups() );
+  CHECK( 3 == converted.numberOutgoingGroups() );
+  CHECK( 2 == converted.numberLegendreMoments() );
+
+  CHECK( true == converted.hasMoment( 0 ) );
+  CHECK( true == converted.hasMoment( 1 ) );
+
+  auto moment = converted.moment( 0 );
+  CHECK( 0 == moment.order() );
+  CHECK( 3 == moment.numberPrimaryGroups() );
+  CHECK( 3 == moment.numberOutgoingGroups() );
+  CHECK_THAT( 1, WithinRel( moment.matrix()[0][0] ) );
+  CHECK_THAT( 2, WithinRel( moment.matrix()[0][1] ) );
+  CHECK_THAT( 3, WithinRel( moment.matrix()[0][2] ) );
+  CHECK_THAT( 0, WithinRel( moment.matrix()[1][0] ) );
+  CHECK_THAT( 4, WithinRel( moment.matrix()[1][1] ) );
+  CHECK_THAT( 5, WithinRel( moment.matrix()[1][2] ) );
+  CHECK_THAT( 0, WithinRel( moment.matrix()[2][0] ) );
+  CHECK_THAT( 0, WithinRel( moment.matrix()[2][1] ) );
+  CHECK_THAT( 6, WithinRel( moment.matrix()[2][2] ) );
+
+  moment = converted.moment( 1 );
   CHECK( 1 == moment.order() );
   CHECK_THAT( 11, WithinRel( moment.matrix()[0][0] ) );
   CHECK_THAT( 12, WithinRel( moment.matrix()[0][1] ) );

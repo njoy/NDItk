@@ -83,6 +83,41 @@ class Test_NDItk_multigroup_DownScatteringMatrix( unittest.TestCase ) :
             self.assertAlmostEqual(  0, moment.matrix[2][1] )
             self.assertAlmostEqual( 16, moment.matrix[2][2] )
 
+            converted = chunk.to_scattering_matrix()
+
+            self.assertEqual( 'pn_full', converted.keyword )
+            self.assertEqual( False, converted.empty )
+            self.assertEqual( 3, converted.number_primary_groups )
+            self.assertEqual( 3, converted.number_outgoing_groups )
+            self.assertEqual( 2, converted.number_legendre_moments )
+
+            self.assertEqual( True, converted.has_moment( 0 ) )
+            self.assertEqual( True, converted.has_moment( 1 ) )
+
+            moment = converted.moment( 0 )
+            self.assertEqual( 0, moment.order )
+            self.assertAlmostEqual( 1, moment.matrix[0][0] )
+            self.assertAlmostEqual( 2, moment.matrix[0][1] )
+            self.assertAlmostEqual( 3, moment.matrix[0][2] )
+            self.assertAlmostEqual( 0, moment.matrix[1][0] )
+            self.assertAlmostEqual( 4, moment.matrix[1][1] )
+            self.assertAlmostEqual( 5, moment.matrix[1][2] )
+            self.assertAlmostEqual( 0, moment.matrix[2][0] )
+            self.assertAlmostEqual( 0, moment.matrix[2][1] )
+            self.assertAlmostEqual( 6, moment.matrix[2][2] )
+
+            moment = converted.moment( 1 )
+            self.assertEqual( 1, moment.order )
+            self.assertAlmostEqual( 11, moment.matrix[0][0] )
+            self.assertAlmostEqual( 12, moment.matrix[0][1] )
+            self.assertAlmostEqual( 13, moment.matrix[0][2] )
+            self.assertAlmostEqual(  0, moment.matrix[1][0] )
+            self.assertAlmostEqual( 14, moment.matrix[1][1] )
+            self.assertAlmostEqual( 15, moment.matrix[1][2] )
+            self.assertAlmostEqual(  0, moment.matrix[2][0] )
+            self.assertAlmostEqual(  0, moment.matrix[2][1] )
+            self.assertAlmostEqual( 16, moment.matrix[2][2] )
+
             self.assertEqual( self.chunk_string, chunk.to_string() )
 
             # verify the record

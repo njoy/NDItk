@@ -9,6 +9,7 @@
 #include "tools/Log.hpp"
 #include "NDItk/base/RealListRecord.hpp"
 #include "NDItk/multigroup/DownScatteringLegendreMoment.hpp"
+#include "NDItk/multigroup/ScatteringMatrix.hpp"
 
 namespace njoy {
 namespace NDItk {
@@ -115,6 +116,8 @@ public:
       throw std::exception();
     }
   }
+
+  #include "NDItk/multigroup/DownScatteringMatrix/src/toScatteringMatrix.hpp"
 
   using base::RealListRecord::keyword;
   using base::RealListRecord::particle;

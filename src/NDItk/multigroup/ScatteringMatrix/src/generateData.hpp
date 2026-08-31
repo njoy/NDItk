@@ -3,7 +3,7 @@
  *
  *  @param[in] moments    the Legendre moments
  */
-static std::vector< double > generateData( std::vector< LegendreMoment >&& moments ) {
+static std::vector< double > generateData( const std::vector< LegendreMoment >& moments ) {
 
   // verify the data
   verify( moments );

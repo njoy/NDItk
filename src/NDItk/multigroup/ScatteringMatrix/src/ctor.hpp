@@ -6,7 +6,7 @@ private:
 ScatteringMatrix( std::vector< LegendreMoment >&& moments,
                   unsigned int incident,
                   unsigned int number ) :
-    RealListRecord( base::Keyword( "pn_full" ), generateData( std::move( moments ) ) ),
+    RealListRecord( base::Keyword( "pn_full" ), generateData( moments ) ),
     incident_( incident ), outgoing_( incident ), number_moments_( number ) {
 
   this->generateBlocks();

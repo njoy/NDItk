@@ -3,7 +3,7 @@
  *
  *  @param[in] moments    the Legendre moments
  */
-static std::vector< double > generateData( std::vector< DownScatteringLegendreMoment > moments ) {
+static std::vector< double > generateData( const std::vector< DownScatteringLegendreMoment >& moments ) {
 
   // verify the data
   verify( moments );

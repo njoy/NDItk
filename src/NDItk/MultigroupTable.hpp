@@ -23,6 +23,7 @@
 #include "NDItk/multigroup/HeatingNumbers.hpp"
 #include "NDItk/multigroup/Kerma.hpp"
 #include "NDItk/multigroup/ScatteringMatrix.hpp"
+#include "NDItk/multigroup/DownScatteringMatrix.hpp"
 
 namespace njoy {
 namespace NDItk {
@@ -76,6 +77,7 @@ class MultigroupTable {
   #include "NDItk/MultigroupTable/src/readOutgoingProductionMatrix.hpp"
   #include "NDItk/MultigroupTable/src/readPrimaryData.hpp"
   #include "NDItk/MultigroupTable/src/readOutgoingData.hpp"
+  #include "NDItk/MultigroupTable/src/resolveDeprecation.hpp"
   #include "NDItk/MultigroupTable/src/verify.hpp"
 
 public:

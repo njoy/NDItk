@@ -240,6 +240,7 @@ class DownScatteringMatrix:
         """
         Return whether or not a given moment is present
         
+        Arguments:
             self     the record
             order    the Legendre order to look for
         """
@@ -247,8 +248,16 @@ class DownScatteringMatrix:
         """
         Return the moment for a given order
         
+        Arguments:
             self     the record
             order    the Legendre order to look for
+        """
+    def to_scattering_matrix(self) -> ...:
+        """
+        Convert this deprecated record to a ScatteringMatrix instance
+        
+        Arguments:
+            self     the record
         """
     def to_string(self) -> str:
         """

@@ -6,7 +6,7 @@ private:
 DownScatteringMatrix( std::vector< DownScatteringLegendreMoment >&& moments,
                       unsigned int groups,
                       unsigned int number ) :
-    RealListRecord( base::Keyword( "pn_down_full" ), generateData( std::move( moments ) ) ),
+    RealListRecord( base::Keyword( "pn_down_full" ), generateData( moments ) ),
     groups_( groups ), number_moments_( number ) {
 
   this->generateBlocks();

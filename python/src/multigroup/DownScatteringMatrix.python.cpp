@@ -77,6 +77,7 @@ void wrapDownScatteringMatrix( python::module& module, python::module& ) {
     &Record::hasMoment,
     python::arg( "order" ),
     "Return whether or not a given moment is present\n\n"
+    "Arguments:\n"
     "    self     the record\n"
     "    order    the Legendre order to look for"
   )
@@ -86,9 +87,18 @@ void wrapDownScatteringMatrix( python::module& module, python::module& ) {
     &Record::moment,
     python::arg( "order" ),
     "Return the moment for a given order\n\n"
+    "Arguments:\n"
     "    self     the record\n"
     "    order    the Legendre order to look for",
     python::return_value_policy::reference_internal
+  )
+  .def(
+
+    "to_scattering_matrix",
+    &Record::toScatteringMatrix,
+    "Convert this deprecated record to a ScatteringMatrix instance\n\n"
+    "Arguments:\n"
+    "    self     the record"
   )
   .def_static(
 

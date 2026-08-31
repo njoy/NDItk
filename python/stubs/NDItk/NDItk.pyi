@@ -5,7 +5,7 @@ from . import dosimetry
 from . import multigroup
 from . import sequence
 from . import thermonuclear
-__all__ = ['DepletionLibrary', 'DepletionTable', 'DosimetryLibrary', 'DosimetryTable', 'MultigroupLibrary', 'MultigroupTable', 'depletion', 'dosimetry', 'multigroup', 'sequence', 'thermonuclear']
+__all__: list[str] = ['DepletionLibrary', 'DepletionTable', 'DosimetryLibrary', 'DosimetryTable', 'MultigroupLibrary', 'MultigroupTable', 'depletion', 'dosimetry', 'multigroup', 'sequence', 'thermonuclear']
 class DepletionLibrary:
     """
     A library containing depletion tables

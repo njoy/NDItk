@@ -18,6 +18,8 @@ namespace multigroup {
   void wrapFissionType( python::module&, python::module& );
   void wrapMetadata( python::module&, python::module& );
   void wrapCrossSection( python::module&, python::module& );
+  void wrapDownScatteringLegendreMoment( python::module&, python::module& );
+  void wrapDownScatteringMatrix( python::module&, python::module& );
   void wrapFluxWeights( python::module&, python::module& );
   void wrapEnergyGroupStructure( python::module&, python::module& );
   void wrapReactionCrossSections( python::module&, python::module& );
@@ -51,6 +53,8 @@ void wrapMultigroup( python::module& module, python::module& viewmodule ) {
   multigroup::wrapFissionType( submodule, viewmodule );
   multigroup::wrapMetadata( submodule, viewmodule );
   multigroup::wrapCrossSection( submodule, viewmodule );
+  multigroup::wrapDownScatteringLegendreMoment( submodule, viewmodule );
+  multigroup::wrapDownScatteringMatrix( submodule, viewmodule );
   multigroup::wrapFluxWeights( submodule, viewmodule );
   multigroup::wrapEnergyGroupStructure( submodule, viewmodule );
   multigroup::wrapReactionCrossSections( submodule, viewmodule );

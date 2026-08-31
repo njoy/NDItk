@@ -82,9 +82,8 @@ public:
   bool hasMoment( int order ) const {
 
     auto iter = std::find_if( this->moments().begin(), this->moments().end(),
-                              [order] ( const auto& entry ) {
-
-                                return entry.order() == order; } );
+                              [order] ( const auto& entry )
+                                      { return entry.order() == order; } );
     return iter != this->moments().end();
   }
 
@@ -96,9 +95,8 @@ public:
   const LegendreMoment& moment( int order ) const {
 
     auto iter = std::find_if( this->moments().begin(), this->moments().end(),
-                              [order] ( const auto& entry ) {
-
-                                return entry.order() == order; } );
+                              [order] ( const auto& entry )
+                                      { return entry.order() == order; } );
     if ( iter != this->moments().end() ){
 
       return *iter;

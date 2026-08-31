@@ -32,6 +32,8 @@ if( NDItk.python )
         ${CMAKE_CURRENT_SOURCE_DIR}/src/multigroup/FissionType.python.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/multigroup/Metadata.python.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/multigroup/CrossSection.python.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/multigroup/DownScatteringLegendreMoment.python.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/multigroup/DownScatteringMatrix.python.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/multigroup/FluxWeights.python.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/multigroup/EnergyGroupStructure.python.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/multigroup/ReactionCrossSections.python.cpp

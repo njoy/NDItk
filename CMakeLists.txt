@@ -86,7 +86,7 @@ if ( NDItk.python )
   add_subdirectory( python )
 endif()
 
-if( ${NDItk.tests} )
+if( NDItk.tests )
   add_subdirectory( test )
 endif()
 

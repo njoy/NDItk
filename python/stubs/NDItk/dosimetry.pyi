@@ -3,7 +3,7 @@ Dosimetry NDI records and subrecords
 """
 from __future__ import annotations
 import typing
-__all__ = ['Metadata']
+__all__: list[str] = ['Metadata']
 class Metadata:
     """
     A group Metadata record for dosimetry data

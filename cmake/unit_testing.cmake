@@ -45,6 +45,8 @@ add_cpp_test( depletion.Target depletion/Target.test.cpp )
 
 add_cpp_test( multigroup.AverageFissionEnergyRelease multigroup/AverageFissionEnergyRelease.test.cpp )
 add_cpp_test( multigroup.CrossSection multigroup/CrossSection.test.cpp )
+add_cpp_test( multigroup.DownScatteringLegendreMoment multigroup/DownScatteringLegendreMoment.test.cpp )
+add_cpp_test( multigroup.DownScatteringMatrix multigroup/DownScatteringMatrix.test.cpp )
 
 add_cpp_test( multigroup.EnergyGroupStructure multigroup/EnergyGroupStructure.test.cpp )
 add_cpp_test( multigroup.FissionNeutronMultiplicity multigroup/FissionNeutronMultiplicity.test.cpp )

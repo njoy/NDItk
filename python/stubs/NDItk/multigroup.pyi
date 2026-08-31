@@ -3,7 +3,7 @@ Multigroup neutron and photon NDI records and subrecords
 """
 from __future__ import annotations
 import typing
-__all__ = ['AverageFissionEnergyRelease', 'CrossSection', 'EnergyGroupStructure', 'FissionNeutronMultiplicity', 'FissionNeutronProduction', 'FissionNeutronSpectrumMatrix', 'FissionNeutronSpectrumVector', 'FissionType', 'FluxWeights', 'HeatingNumbers', 'Kerma', 'LegendreMoment', 'Metadata', 'Multiplicities', 'OutgoingParticleTransportData', 'OutgoingParticleTypes', 'ReactionCrossSections', 'ReactionMultiplicities', 'ReactionMultiplicityType', 'ScatteringMatrix', 'TotalCrossSection', 'Velocities']
+__all__: list[str] = ['AverageFissionEnergyRelease', 'CrossSection', 'DownScatteringLegendreMoment', 'DownScatteringMatrix', 'EnergyGroupStructure', 'FissionNeutronMultiplicity', 'FissionNeutronProduction', 'FissionNeutronSpectrumMatrix', 'FissionNeutronSpectrumVector', 'FissionType', 'FluxWeights', 'HeatingNumbers', 'Kerma', 'LegendreMoment', 'Metadata', 'Multiplicities', 'OutgoingParticleTransportData', 'OutgoingParticleTypes', 'ReactionCrossSections', 'ReactionMultiplicities', 'ReactionMultiplicityType', 'ScatteringMatrix', 'TotalCrossSection', 'Velocities']
 class AverageFissionEnergyRelease:
     """
     An average fission energy release record for multigroup neutron and photon data
@@ -147,6 +147,160 @@ class CrossSection:
     def values(self) -> ...:
         """
         The data values of the subrecord
+        """
+class DownScatteringLegendreMoment:
+    """
+    A Legendre moment subrecord for multigroup neutron data using an upper
+    triangular matrix (deprecated)
+    """
+    def __init__(self, order: int, values: list[float], groups: int) -> None:
+        """
+        Initialise the subrecord
+        
+        Arguments:
+            self      the record
+            order     the Legendre order
+            values    the compressed (down scatter) values of the matrix
+            groups    the number of groups
+        """
+    def to_string(self) -> str:
+        """
+        Return the string representation of the subrecord
+        
+        Arguments:
+            self    the subrecord
+        """
+    @property
+    def empty(self) -> bool:
+        """
+        Flag indicating whether or not the subrecord is empty
+        """
+    @property
+    def matrix(self) -> ...:
+        """
+        The full matrix defined by this record
+        """
+    @property
+    def number_groups(self) -> int:
+        """
+        The number of groups
+        """
+    @property
+    def number_outgoing_groups(self) -> int:
+        """
+        The number of outgoing groups
+        """
+    @property
+    def number_primary_groups(self) -> int:
+        """
+        The number of primary groups
+        """
+    @property
+    def order(self) -> int:
+        """
+        The Legendre moment order
+        """
+    @property
+    def size(self) -> int:
+        """
+        The size of the subrecord
+        """
+    @property
+    def values(self) -> ...:
+        """
+        The data values of the subrecord
+        """
+class DownScatteringMatrix:
+    """
+    A scattering matrix record for multigroup neutron data using upper
+    triangular matrices (deprecated)
+    """
+    @staticmethod
+    def from_string(string: str, groups: int, number: int) -> DownScatteringMatrix:
+        """
+        Read the record from a string
+        
+        An exception is raised if something goes wrong while reading the
+        record
+        
+        Arguments:
+            string    the string representing the record
+            groups    the number of energy groups
+            number    the number of moments
+        """
+    def __init__(self, moments: list[DownScatteringLegendreMoment]) -> None:
+        """
+        Initialise the record
+        
+        Arguments:
+            self      the record
+            moments   the Legendre moments of the scattering matrix
+        """
+    def has_moment(self, order: int) -> bool:
+        """
+        Return whether or not a given moment is present
+        
+            self     the record
+            order    the Legendre order to look for
+        """
+    def moment(self, order: int) -> DownScatteringLegendreMoment:
+        """
+        Return the moment for a given order
+        
+            self     the record
+            order    the Legendre order to look for
+        """
+    def to_string(self) -> str:
+        """
+        Return the string representation of the record
+        
+        Arguments:
+            self    the record
+        """
+    @property
+    def empty(self) -> bool:
+        """
+        Flag indicating whether or not the record is empty
+        """
+    @property
+    def keyword(self) -> str:
+        """
+        The record keyword
+        """
+    @property
+    def moments(self) -> list[DownScatteringLegendreMoment]:
+        """
+        The Legendre moments
+        """
+    @property
+    def number_groups(self) -> int:
+        """
+        The number of groups defined by this record
+        """
+    @property
+    def number_legendre_moments(self) -> int:
+        """
+        The number of moments defined in this record
+        """
+    @property
+    def number_outgoing_groups(self) -> int:
+        """
+        The number of outgoing groups defined by this record
+        """
+    @property
+    def number_primary_groups(self) -> int:
+        """
+        The number of primary groups defined by this record
+        """
+    @property
+    def size(self) -> int:
+        """
+        The size of the record
+        """
+    @property
+    def values(self) -> ...:
+        """
+        The data values of the record
         """
 class EnergyGroupStructure:
     """

@@ -69,7 +69,7 @@ public:
 
     Iterator stop = iter;
 
-    // 'undo' the last word ("end_comment") read by disco 
+    // 'undo' the last word ("end_comment") read by disco
     stop = std::prev( stop, endCommentKeyword.length() );
 
     this->comment_ = std::string( start, stop );

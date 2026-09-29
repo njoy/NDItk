@@ -109,7 +109,6 @@ public:
     auto stop = std::find_if( this->data()->rbegin(), this->data()->rend(), compare ).base();
     this->data() = std::string( start, stop );
 
-
     if ( pos != end ) {
 
       iter = pos + 1;

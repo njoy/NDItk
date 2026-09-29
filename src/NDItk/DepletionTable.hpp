@@ -12,7 +12,7 @@ namespace njoy {
 namespace NDItk {
 
 /**
- *  @brief A product/depletion table 
+ *  @brief A product/depletion table
  */
 class DepletionTable {
 
@@ -34,8 +34,8 @@ class DepletionTable {
 
     if ( this->metadata_.numberIncidentParticles() != this->numberIncidentParticles() ) {
 
-      Log::error( "Found a different number of incident particle records than indicated in metadata" ); 
-      Log::info( "IncidentParticle records found: {}", this->numberIncidentParticles() ); 
+      Log::error( "Found a different number of incident particle records than indicated in metadata" );
+      Log::info( "IncidentParticle records found: {}", this->numberIncidentParticles() );
       Log::info( "incident particles in Metadata: {}", this->metadata_.numberIncidentParticles().value() );
       throw std::exception();
     }
@@ -68,17 +68,17 @@ public:
    *  @param[in] information       the table information line (optional)
    *  @param[in] source            the source date (optional)
    */
-  DepletionTable( std::string zaid, 
+  DepletionTable( std::string zaid,
                   std::string libname,
-                  std::string process, 
+                  std::string process,
                   std::vector< depletion::IncidentParticle > incident,
                   std::optional< std::string > information = std::nullopt,
                   std::optional< std::string > source = std::nullopt ) :
-      metadata_( std::move( zaid ), 
+      metadata_( std::move( zaid ),
                  std::move( libname ),
-                 std::move( process ), 
+                 std::move( process ),
                  incident.size(),
-                 std::move( information ), 
+                 std::move( information ),
                  std::move( source ) ),
       incident_particles_( std::move( incident ) ) {
 
@@ -138,7 +138,7 @@ public:
   template< typename Iterator >
   void read( Iterator& iter, const Iterator& end ) {
 
-    auto tmp_incident = depletion::IncidentParticle(); 
+    auto tmp_incident = depletion::IncidentParticle();
     std::vector< depletion::IncidentParticle > incident_data;
 
     std::string keyword;
@@ -151,7 +151,7 @@ public:
 
         this->metadata_.read( keyword, iter, end );
       }
-      // incident particle data 
+      // incident particle data
       else if ( keyword == tmp_incident.keyword() ) {
 
         tmp_incident.read( iter, end );

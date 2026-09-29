@@ -28,16 +28,16 @@ protected:
 
 public:
 
-    // Default constructor
-    Library() = default;
+  // Default constructor
+  Library() = default;
 
-    /**
-     *  @brief Constructor
-     *
-     *  @param[in] tables  a vector of NDI tables
-     */
-    Library( std::string header, std::vector<Table> tables ) 
-    : header_( std::move(header) ), tables_( std::move( tables ) ) {}
+  /**
+   *  @brief Constructor
+   *
+   *  @param[in] tables  a vector of NDI tables
+   */
+  Library( std::string header, std::vector<Table> tables ) :
+    header_( std::move(header) ), tables_( std::move( tables ) ) {}
 
   /**
    *  @brief Return the number of data tables in the library
@@ -121,21 +121,21 @@ public:
       keyword = njoy::tools::disco::FreeFormatCharacter::read< std::string >( iter, end );
     }
 
-    // 'undo' the last word ("zaid") read by disco 
+    // 'undo' the last word ("zaid") read by disco
     iter = std::prev( iter, tableStartKeyword.length() );
 
-    // store all of the content before tables in a header string 
+    // store all of the content before tables in a header string
     this->header_ = std::string( headerStart, iter );
     this->header_.pop_back(); // header picks up an extra newline somehow? --> get rid of it
 
     // read the tables until the end
     while( iter != end ) {
 
-      Table table; 
+      Table table;
       table.read( iter, end );
 
       this->tables_.push_back( table );
-    }   
+    }
   }
 
   /**

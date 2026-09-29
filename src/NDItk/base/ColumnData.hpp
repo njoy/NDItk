@@ -38,9 +38,9 @@ class ColumnData : protected SubListRecord< ColumnData<T,ncol>, T > {
     if ( data.size() % ncol != 0 ) {
 
       Log::error( "The columns must have data of equal length" );
-      Log::info( 
-        "Found {} data points, which can not be subdivided into {} equal-length columns", 
-        data.size(), ncol 
+      Log::info(
+        "Found {} data points, which can not be subdivided into {} equal-length columns",
+        data.size(), ncol
       );
       throw std::exception();
     }
@@ -69,7 +69,7 @@ class ColumnData : protected SubListRecord< ColumnData<T,ncol>, T > {
 
       for (int j=0; j < this->numberColumns(); ++j) {
 
-        buffer << indentPrefix( (indentLevel-1)*maskFirst(i) + 1 ) 
+        buffer << indentPrefix( (indentLevel-1)*maskFirst(i) + 1 )
                << this->value( i*this->numberColumns() + j );
       }
 
@@ -104,7 +104,7 @@ public:
   /**
    *  @brief Constructor
    *
-   *  @param[in] begin    the begin iterator of the column data 
+   *  @param[in] begin    the begin iterator of the column data
    *  @param[in] end      the end iterator of the column data
    */
   ColumnData( Iterator begin, Iterator end ) :

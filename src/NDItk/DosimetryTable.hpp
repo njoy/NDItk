@@ -171,7 +171,7 @@ public:
                   std::string process, double awr, double temperature,
                   double dilution,
                   multigroup::EnergyGroupStructure structure,
-                  multigroup::FluxWeights weigths,
+                  multigroup::FluxWeights weights,
                   multigroup::TotalCrossSection total_xs,
                   multigroup::ReactionCrossSections reaction_xs,
                   std::optional< std::string > information = std::nullopt,
@@ -183,7 +183,7 @@ public:
                  std::move( information ), std::move( source ), std::move( weight ),
                  std::nullopt, std::nullopt ),
       primary_structure_( std::move( structure ) ),
-      weights_( std::move( weigths ) ),
+      weights_( std::move( weights ) ),
       total_( std::move( total_xs ) ),
       xs_( std::move( reaction_xs ) ) {
 
@@ -227,7 +227,7 @@ public:
   }
 
   /**
-   *  @brief Return the reaction product multipliciies record for the requested multiplicity type
+   *  @brief Return the reaction product multiplicities record for the requested multiplicity type
    */
   const multigroup::ReactionMultiplicities&
   reactionProductMultiplicities( const multigroup::ReactionMultiplicityType& type ) const {

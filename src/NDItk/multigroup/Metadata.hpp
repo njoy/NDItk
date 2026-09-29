@@ -44,7 +44,20 @@ class Metadata {
 
   #include "NDItk/multigroup/Metadata/src/generateSecondaryGroups.hpp"
   #include "NDItk/multigroup/Metadata/src/generateSecondaryLegendreOrder.hpp"
-  #include "NDItk/multigroup/Metadata/src/readRecord.hpp"
+
+  /**
+   *  @brief A helper function to read a metadata record
+   */
+  template < typename Record, typename Iterator >
+  static void readRecord( Record& record, Iterator& iter, const Iterator& end ) {
+
+    if ( ! record.empty() ) {
+
+      Log::error( "Duplicate keyword found: \'{}\'", record.keyword() );
+      throw std::exception();
+    }
+    record.read( iter, end );
+  }
 
 public:
 

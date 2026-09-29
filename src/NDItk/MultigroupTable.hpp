@@ -71,11 +71,57 @@ class MultigroupTable {
 
   #include "NDItk/MultigroupTable/src/generateOutgoingStructureMetadata.hpp"
   #include "NDItk/MultigroupTable/src/generateOutgoingLegendreOrderMetadata.hpp"
-  #include "NDItk/MultigroupTable/src/readRecord.hpp"
-  #include "NDItk/MultigroupTable/src/readPrimaryStructure.hpp"
+
+  /**
+   *  @brief A helper function to read a data record
+   */
+  template < typename Record, typename Iterator, typename... Arguments >
+  static void readRecord( Record& record, Iterator& iter, const Iterator& end,
+                          Arguments... arguments ) {
+
+    if ( ! record.empty() ) {
+
+      Log::error( "Duplicate keyword found: \'{}\'", record.keyword() );
+      throw std::exception();
+    }
+    record.read( iter, end, arguments... );
+  }
+
+  template< typename Iterator >
+  void readPrimaryStructure( Iterator& iter, const Iterator& end ) {
+
+    if ( this->metadata_.numberGroups().has_value() ) {
+
+      readRecord( this->primary_structure_, iter, end,
+                  this->metadata_.numberGroups().value() + 1 );
+    }
+    else {
+
+      Log::error( "Metadata required for the \'\' record was not found", this->primary_structure_.keyword() );
+      Log::info( "Required metadata is missing: number of groups in the primary group structure" );
+      throw std::exception();
+    }
+  }
+
   #include "NDItk/MultigroupTable/src/readOutgoingStructure.hpp"
   #include "NDItk/MultigroupTable/src/readOutgoingProductionMatrix.hpp"
-  #include "NDItk/MultigroupTable/src/readPrimaryData.hpp"
+
+  template< typename Record, typename Iterator >
+  void readPrimaryData( Record& record, Iterator& iter, const Iterator& end ) {
+
+    if ( this->metadata_.numberGroups().has_value() ) {
+
+      readRecord( record, iter, end,
+                  this->metadata_.numberGroups().value() );
+    }
+    else {
+
+      Log::error( "Metadata required for the \'\' record was not found", record.keyword() );
+      Log::info( "Required metadata is missing: number of groups in the primary group structure" );
+      throw std::exception();
+    }
+  }
+
   #include "NDItk/MultigroupTable/src/readOutgoingData.hpp"
   #include "NDItk/MultigroupTable/src/resolveDeprecation.hpp"
   #include "NDItk/MultigroupTable/src/verify.hpp"

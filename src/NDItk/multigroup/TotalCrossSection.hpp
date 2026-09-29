@@ -20,13 +20,44 @@ class TotalCrossSection : protected base::RealListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/multigroup/TotalCrossSection/src/verify.hpp"
+  /**
+   *  @brief Verify the weights
+   *
+   *  The following verification tests are performed:
+   *    - there is at least one value
+   *
+   *  @param[in] values    the cross section values to be verified
+   */
+  template < typename Range >
+  static void verify( const Range& values ) {
+
+    if ( values.size() < 1 ) {
+
+      Log::error( "Expected at least one total cross section value, found {}",
+                  values.size() );
+      throw std::exception();
+    }
+  }
 
 public:
 
   /* constructor */
 
-  #include "NDItk/multigroup/TotalCrossSection/src/ctor.hpp"
+  /**
+   *  @brief Default constructor
+   */
+  TotalCrossSection() : RealListRecord( base::Keyword( "sig_tot" ) ) {}
+
+  /**
+   *  @brief Constructor
+   *
+   *  @param[in] values    the total cross section values
+   */
+  TotalCrossSection( std::vector< double > values ) :
+      RealListRecord( base::Keyword( "sig_tot" ), std::move( values ) ) {
+
+    verify( this->values() );
+  }
 
   /* methods */
 
@@ -43,7 +74,22 @@ public:
   using base::RealListRecord::end;
   using base::RealListRecord::print;
 
-  #include "NDItk/multigroup/TotalCrossSection/src/read.hpp"
+  /**
+   *  @brief Read the record data
+   *
+   *  This function overrides the base record read() function to enable
+   *  verification of the read data.
+   *
+   *  @param[in,out] iter     an iterator to the current position in the input
+   *  @param[in,out] end      an iterator to the end of the input
+   *  @param[in,out] number   the number of cross section values
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end, std::size_t number ) {
+
+    base::RealListRecord::read( iter, end, number );
+    verify( this->values() );
+  };
 };
 
 } // multigroup namespace

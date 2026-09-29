@@ -20,13 +20,44 @@ class OutgoingParticleTransportData : protected base::StringListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/multigroup/OutgoingParticleTransportData/src/verify.hpp"
+  /**
+   *  @brief Verify the outgoing transport data
+   *
+   *  The following verification tests are performed:
+   *    - there is at least one value
+   *
+   *  @param[in] values    the zaid values to be verified
+   */
+  template < typename Range >
+  static void verify( const Range& values ) {
+
+    if ( values.size() < 1 ) {
+
+      Log::error( "Expected at least one zaid value, found {}",
+                  values.size() );
+      throw std::exception();
+    }
+  }
 
 public:
 
   /* constructor */
 
-  #include "NDItk/multigroup/OutgoingParticleTransportData/src/ctor.hpp"
+  /**
+   *  @brief Default constructor
+   */
+  OutgoingParticleTransportData() : StringListRecord( base::Keyword( "sec_part_zaids" ) ) {}
+
+  /**
+   *  @brief Constructor
+   *
+   *  @param[in] values    the zaid values
+   */
+  OutgoingParticleTransportData( std::vector< std::string > values ) :
+      StringListRecord( base::Keyword( "sec_part_zaids" ), std::move( values ) ) {
+
+    verify( this->values() );
+  }
 
   /* methods */
 
@@ -43,7 +74,22 @@ public:
   using base::StringListRecord::end;
   using base::StringListRecord::print;
 
-  #include "NDItk/multigroup/OutgoingParticleTransportData/src/read.hpp"
+  /**
+   *  @brief Read the record data
+   *
+   *  This function overrides the base record read() function to enable
+   *  verification of the read data.
+   *
+   *  @param[in,out] iter     an iterator to the current position in the input
+   *  @param[in,out] end      an iterator to the end of the input
+   *  @param[in,out] number   the number of zaid values
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end, std::size_t number ) {
+
+    base::StringListRecord::read( iter, end, number );
+    verify( this->values() );
+  };
 };
 
 } // multigroup namespace

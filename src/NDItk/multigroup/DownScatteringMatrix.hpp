@@ -29,9 +29,76 @@ class DownScatteringMatrix : protected base::RealListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/multigroup/DownScatteringMatrix/src/verify.hpp"
-  #include "NDItk/multigroup/DownScatteringMatrix/src/generateData.hpp"
-  #include "NDItk/multigroup/DownScatteringMatrix/src/generateBlocks.hpp"
+  /**
+   *  @brief Verify the down scattering matrix information
+   *
+   *  The following verification tests are performed:
+   *    - there is at least one Legendre moment
+   *    - the number of groups for each moment is the same
+   *
+   *  @param[in] moments   the moments to be verified
+   */
+  template < typename Range >
+  static void verify( const Range& moments ) {
+
+    if ( moments.size() < 1 ) {
+
+      Log::error( "Expected at least one moment, found {}", moments.size() );
+      throw std::exception();
+    }
+
+    const auto groups = moments.front().numberGroups();
+    for ( unsigned int i = 0; i < moments.size(); ++i ) {
+
+      if ( moments[i].numberGroups() != groups ) {
+
+        Log::error( "Inconsistent number of groups detected for moment "
+                    "with order \'{}\'", moments[i].order() );
+        Log::info( "Expected number of groups: {}", groups );
+        Log::info( "Found number of groups: {}", moments[i].numberGroups() );
+        throw std::exception();
+      }
+    }
+  }
+
+  /**
+   *  @brief Generate the record's data vector
+   *
+   *  @param[in] moments    the Legendre moments
+   */
+  static std::vector< double > generateData( const std::vector< DownScatteringLegendreMoment >& moments ) {
+
+    // verify the data
+    verify( moments );
+
+    // generate the data vector
+    std::vector< double > data;
+    const auto size = moments.front().size();
+    data.reserve( moments.size() * size );
+    for ( unsigned int i = 0; i < moments.size(); ++i ) {
+
+      data.insert( data.end(), moments[i].begin(), moments[i].end() );
+    }
+    return data;
+  }
+
+  /**
+   *  @brief Generate the subrecords for this record
+   */
+  void generateBlocks() {
+
+    if ( ! this->empty() ) {
+
+      this->moments_.clear();
+      for ( unsigned int index = 0; index < this->numberLegendreMoments(); ++index ) {
+
+        const auto size = 1 + this->numberGroups() * ( this->numberGroups() + 1 ) / 2;
+        const auto left = this->values().begin() + index * size;
+        const auto right = left + size;
+        this->moments_.emplace_back( left, right, this->numberGroups() );
+      }
+    }
+  }
 
   using base::RealListRecord::key;
 
@@ -194,7 +261,31 @@ public:
     }
   }
 
-  #include "NDItk/multigroup/DownScatteringMatrix/src/toScatteringMatrix.hpp"
+  /**
+   *  @brief Convert this deprecated record to a ScatteringMatrix instance
+   */
+  ScatteringMatrix toScatteringMatrix() const {
+
+    if ( this->empty() ) {
+
+      return ScatteringMatrix();
+    }
+
+    std::vector< LegendreMoment > moments;
+    moments.reserve( this->moments_.size() );
+    for ( const auto& moment : this->moments_ ) {
+
+      std::vector< double > matrix;
+      matrix.reserve( this->numberGroups() * this->numberGroups() );
+      for ( const auto& row : moment.matrix() ) {
+
+        matrix.insert( matrix.end(), row.begin(), row.end() );
+      }
+      moments.emplace_back( moment.order(), std::move( matrix ),
+                            this->numberGroups(), this->numberGroups() );
+    }
+    return ScatteringMatrix( std::move( moments ) );
+  }
 
   using base::RealListRecord::keyword;
   using base::RealListRecord::particle;
@@ -204,8 +295,45 @@ public:
   using base::RealListRecord::begin;
   using base::RealListRecord::end;
 
-  #include "NDItk/multigroup/DownScatteringMatrix/src/read.hpp"
-  #include "NDItk/multigroup/DownScatteringMatrix/src/print.hpp"
+  /**
+   *  @brief Read the record data (down scattering matrix)
+   *
+   *  @param[in,out] iter        an iterator to the current position in the input
+   *  @param[in,out] end         an iterator to the end of the input
+   *  @param[in,out] groups      the number of energy groups
+   *  @param[in,out] number      the number of moments
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end, unsigned int groups,
+             unsigned int number ) {
+
+    // read in the data
+    this->groups_ = groups;
+    this->number_moments_ = number;
+    base::RealListRecord::read( iter, end, number * ( 1 + groups * ( groups + 1 ) / 2 ) );
+    this->generateBlocks();
+
+    // verify
+    verify( this->moments() );
+  };
+
+  /**
+   *  @brief Print the record (if it is not empty)
+   *
+   *  @param[in] iter   the current position in the output
+   */
+  template< typename OutputIterator >
+  void print( OutputIterator& iter ) const {
+
+    if ( ! this->empty() ) {
+
+      this->key().print( iter );
+      for ( const auto& entry : this->moments_ ) {
+
+        entry.print( iter );
+      }
+    }
+  };
 };
 
 } // multigroup namespace

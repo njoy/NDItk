@@ -27,9 +27,61 @@ class ReactionMultiplicities : protected base::IntegerListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/multigroup/ReactionMultiplicities/src/verify.hpp"
-  #include "NDItk/multigroup/ReactionMultiplicities/src/generateData.hpp"
-  #include "NDItk/multigroup/ReactionMultiplicities/src/generateBlocks.hpp"
+  /**
+   *  @brief Verify the reaction cross section information
+   *
+   *  The following verification tests are performed:
+   *    - there is at least one reaction
+   *
+   *  @param[in] reactions    the reactions to be verified
+   */
+  template < typename Range >
+  static void verify( const Range& reactions ) {
+
+    if ( reactions.size() < 1 ) {
+
+      Log::error( "Expected at least one reaction, found {}", reactions.size() );
+      throw std::exception();
+    }
+  }
+
+  /**
+   *  @brief Generate the record's data vector
+   *
+   *  @param[in] multiplicities    the multiplicity data
+   */
+  static std::vector< int > generateData( std::vector< Multiplicities > multiplicities ) {
+
+    // verify the data
+    verify( multiplicities );
+
+    // generate the data vector
+    std::vector< int > data;
+    for ( unsigned int i = 0; i < multiplicities.size(); ++i ) {
+
+      data.insert( data.end(), multiplicities[i].begin(), multiplicities[i].end() );
+    }
+    return data;
+  }
+
+  /**
+   *  @brief Generate the subrecords for this record
+   */
+  void generateBlocks() {
+
+    if ( ! this->empty() ) {
+
+      this->multiplicities_.clear();
+      auto left = this->values().begin();
+      for ( unsigned int index = 0; index < this->numberReactions(); ++index ) {
+
+        auto number = *( left + 1 );
+        const auto right = left + 2 + 2 * number;
+        this->multiplicities_.emplace_back( left, right );
+        left = right;
+      }
+    }
+  }
 
   using base::IntegerListRecord::key;
 
@@ -211,8 +263,65 @@ public:
   using base::IntegerListRecord::begin;
   using base::IntegerListRecord::end;
 
-  #include "NDItk/multigroup/ReactionMultiplicities/src/read.hpp"
-  #include "NDItk/multigroup/ReactionMultiplicities/src/print.hpp"
+    /**
+     *  @brief Read the record data
+     *
+   *  @param[in,out] iter        an iterator to the current position in the input
+   *  @param[in,out] end         an iterator to the end of the input
+   *  @param[in,out] reactions   the number of reactions
+     */
+    template< typename Iterator >
+    void read( Iterator& iter, const Iterator& end, std::size_t reactions ) {
+
+      // read in the data
+      this->reactions_ = reactions;
+      std::vector< int > data;
+      while ( reactions-- ) {
+
+        // read MT number and number of reaction products
+        data.push_back( njoy::tools::disco::FreeFormatInteger::read< int >( iter, end ) );
+        data.push_back( njoy::tools::disco::FreeFormatInteger::read< int >( iter, end ) );
+        int number = data.back();
+        if ( number < 0 ) {
+
+          Log::error( "The number of reaction products cannot be less than zero" );
+          Log::info( "Found {} as the number of reaction products", data[1] );
+          throw std::exception();
+        }
+        else {
+
+          // read 2 numbers for each reaction product
+          number *= 2;
+          while ( number-- ) {
+
+            data.push_back( njoy::tools::disco::FreeFormatInteger::read< int >( iter, end ) );
+          }
+        }
+      }
+      this->data() = data;
+      this->generateBlocks();
+
+      // verify
+      verify( this->reactions() );
+    };
+
+  /**
+   *  @brief Print the record (if it is not empty)
+   *
+   *  @param[in] iter   the current position in the output
+   */
+  template< typename OutputIterator >
+  void print( OutputIterator& iter ) const {
+
+    if ( ! this->empty() ) {
+
+      this->key().print( iter );
+      for ( const auto& entry : this->multiplicities_ ) {
+
+        entry.print( iter );
+      }
+    }
+  };
 };
 
 } // multigroup namespace

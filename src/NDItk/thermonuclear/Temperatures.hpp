@@ -20,13 +20,44 @@ class Temperatures : protected base::RealListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/thermonuclear/Temperatures/src/verify.hpp"
+  /**
+   *  @brief Verify the temperature values
+   *
+   *  The following verification tests are performed:
+   *    - there is at least one value
+   *
+   *  @param[in] values    the temperature values to be verified
+   */
+  template < typename Range >
+  static void verify( const Range& values ) {
+
+    if ( values.size() < 1 ) {
+
+      Log::error( "Expected at least one temperature value, found {}",
+                  values.size() );
+      throw std::exception();
+    }
+  }
 
 public:
 
   /* constructor */
 
-  #include "NDItk/thermonuclear/Temperatures/src/ctor.hpp"
+  /**
+   *  @brief Default constructor for the temperature record
+   */
+  Temperatures() : RealListRecord( base::Keyword( "temps" ) ) {}
+
+  /**
+   *  @brief Constructor for the temperature recor
+   *
+   *  @param[in] values    the temperature values
+   */
+  Temperatures( std::vector< double > values ) :
+      RealListRecord( base::Keyword( "temps" ), std::move( values ) ) {
+
+    verify( this->values() );
+  }
 
   /* methods */
 
@@ -44,7 +75,22 @@ public:
   using base::RealListRecord::end;
   using base::RealListRecord::print;
 
-  #include "NDItk/thermonuclear/Temperatures/src/read.hpp"
+  /**
+   *  @brief Read the record data
+   *
+   *  This function overrides the base record read() function to enable
+   *  verification of the read data.
+   *
+   *  @param[in,out] iter     an iterator to the current position in the input
+   *  @param[in,out] end      an iterator to the end of the input
+   *  @param[in,out] number   the number of kerma values
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end, std::size_t number ) {
+
+    base::RealListRecord::read( iter, end, number );
+    verify( this->values() );
+  };
 };
 
 } // thermonuclear namespace

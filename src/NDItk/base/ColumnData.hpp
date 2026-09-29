@@ -24,8 +24,60 @@ class ColumnData : protected SubListRecord< ColumnData<T,ncol>, T > {
 
   /* auxiliary functions */
 
-  #include "NDItk/base/ColumnData/src/verify.hpp"
-  #include "NDItk/base/ColumnData/src/write.hpp"
+  /**
+   *  @brief Verify the column data
+   *
+   *  The following verification tests are performed:
+   *    - there are the correct number of columns
+   *
+   *  @param[in] data    the data values in the subrecord
+   */
+  template < typename Range >
+  static void verify( const Range& data ) {
+
+    if ( data.size() % ncol != 0 ) {
+
+      Log::error( "The columns must have data of equal length" );
+      Log::info( 
+        "Found {} data points, which can not be subdivided into {} equal-length columns", 
+        data.size(), ncol 
+      );
+      throw std::exception();
+    }
+  }
+
+  /**
+   *  @brief Write the record data
+   *
+   *  This assumes that the record is not empty.
+   *
+   *  @param[in] iter   the current position in the output
+   */
+  template< typename OutputIterator >
+  void write( OutputIterator& iter ) const {
+
+    auto indentLevel  = 1;
+    auto indentPrefix = [](int n){ return std::string(2*n, ' '); };
+    auto maskFirst    = [](int i){ return ( (i == 0) ? 1 : 0 );  };
+
+    std::ostringstream buffer;
+    buffer << std::setprecision(15);
+
+    auto nrow = this->size() / this->numberColumns();
+
+    for (int i=0; i < nrow; ++i) {
+
+      for (int j=0; j < this->numberColumns(); ++j) {
+
+        buffer << indentPrefix( (indentLevel-1)*maskFirst(i) + 1 ) 
+               << this->value( i*this->numberColumns() + j );
+      }
+
+      buffer << "\n";
+    }
+
+    for ( auto c : buffer.str() ) { *iter++ = c; }
+  };
 
 public:
 
@@ -33,7 +85,33 @@ public:
 
   /* constructor */
 
-  #include "NDItk/base/ColumnData/src/ctor.hpp"
+  /**
+   *  @brief Default constructor
+   */
+  ColumnData() = default;
+
+  /**
+   *  @brief Constructor
+   *
+   *  @param[in] data     the data to be interpreted as columns
+   */
+  ColumnData( std::vector<T> data ) :
+    Parent( std::move(data) ) {
+
+    verify( this->values() );
+  }
+
+  /**
+   *  @brief Constructor
+   *
+   *  @param[in] begin    the begin iterator of the column data 
+   *  @param[in] end      the end iterator of the column data
+   */
+  ColumnData( Iterator begin, Iterator end ) :
+    Parent( begin, end ) {
+
+    verify( this->values() );
+  }
 
   /**
    *  @brief Return the number of columns

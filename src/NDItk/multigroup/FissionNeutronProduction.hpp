@@ -21,13 +21,53 @@ class FissionNeutronProduction : protected base::RealListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/multigroup/FissionNeutronProduction/src/verify.hpp"
+  /**
+   *  @brief Verify the production values
+   *
+   *  The following verification tests are performed:
+   *    - there is at least one value
+   *
+   *  @param[in] values    the production values to be verified
+   */
+  template < typename Range >
+  static void verify( const Range& values ) {
+
+    if ( values.size() < 1 ) {
+
+      Log::error( "Expected at least one fission neutron production value, found {}",
+                  values.size() );
+      throw std::exception();
+    }
+  }
 
 public:
 
   /* constructor */
 
-  #include "NDItk/multigroup/FissionNeutronProduction/src/ctor.hpp"
+  /**
+   *  @brief Default constructor
+   */
+  FissionNeutronProduction() : RealListRecord( base::Keyword( "nu_sig_f" ) ) {}
+
+  /**
+   *  @brief Constructor for a fission type
+   *
+   *  @param[in] type    the fission type (prompt, delayed or total)
+   */
+  FissionNeutronProduction( FissionType type ) : RealListRecord( base::Keyword( "nu_sig_f", type ) ) {}
+
+  /**
+   *  @brief Constructor
+   *
+   *  @param[in] type      the fission type (prompt, delayed or total)
+   *  @param[in] values    the fission neutron production values
+   */
+  FissionNeutronProduction( FissionType type,
+                            std::vector< double > values ) :
+      RealListRecord( base::Keyword( "nu_sig_f", type ), std::move( values ) ) {
+
+    verify( this->values() );
+  }
 
   /* methods */
 
@@ -49,7 +89,22 @@ public:
   using base::RealListRecord::end;
   using base::RealListRecord::print;
 
-  #include "NDItk/multigroup/FissionNeutronProduction/src/read.hpp"
+  /**
+   *  @brief Read the record data
+   *
+   *  This function overrides the base record read() function to enable
+   *  verification of the read data.
+   *
+   *  @param[in,out] iter     an iterator to the current position in the input
+   *  @param[in,out] end      an iterator to the end of the input
+   *  @param[in,out] number   the number of fission neutron production values
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end, std::size_t number ) {
+
+    base::RealListRecord::read( iter, end, number );
+    verify( this->values() );
+  };
 };
 
 } // multigroup namespace

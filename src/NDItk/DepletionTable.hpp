@@ -23,13 +23,67 @@ class DepletionTable {
 
   /* auxiliary functions */
 
-  #include "NDItk/DepletionTable/src/verify.hpp"
+  /**
+   *  @brief Verify the depletion data
+   *
+   *  The following verification tests are performed:
+   *    - The number of incident particles must match btw metadata and number of records read
+   *    - The number of incident particle records read must be > 0
+   */
+  void verify() {
+
+    if ( this->metadata_.numberIncidentParticles() != this->numberIncidentParticles() ) {
+
+      Log::error( "Found a different number of incident particle records than indicated in metadata" ); 
+      Log::info( "IncidentParticle records found: {}", this->numberIncidentParticles() ); 
+      Log::info( "incident particles in Metadata: {}", this->metadata_.numberIncidentParticles().value() );
+      throw std::exception();
+    }
+
+    if ( this->numberIncidentParticles() <= 0 ) {
+
+      Log::error( "Found an invalid number of incident particle records" );
+      Log::info( "Found an invalid number of incident particle records: {}", this->numberIncidentParticles() );
+      throw std::exception();
+    }
+  };
 
 public:
 
   /* constructor */
 
-  #include "NDItk/DepletionTable/src/ctor.hpp"
+  /**
+   *  @brief Default constructor
+   */
+  DepletionTable() :
+      metadata_(), incident_particles_() {}
+
+  /**
+   *  @brief Constructor
+   *
+   *  @param[in] zaid              the zaid of the table
+   *  @param[in] libname           the library name
+   *  @param[in] process           the processing date
+   *  @param[in] incident          a vector of IncidentParticle records
+   *  @param[in] information       the table information line (optional)
+   *  @param[in] source            the source date (optional)
+   */
+  DepletionTable( std::string zaid, 
+                  std::string libname,
+                  std::string process, 
+                  std::vector< depletion::IncidentParticle > incident,
+                  std::optional< std::string > information = std::nullopt,
+                  std::optional< std::string > source = std::nullopt ) :
+      metadata_( std::move( zaid ), 
+                 std::move( libname ),
+                 std::move( process ), 
+                 incident.size(),
+                 std::move( information ), 
+                 std::move( source ) ),
+      incident_particles_( std::move( incident ) ) {
+
+    this->verify();
+  }
 
   /* methods */
 
@@ -76,7 +130,55 @@ public:
   const std::vector< depletion::IncidentParticle >&
   incidentParticles() const { return this->incident_particles_; }
 
-  #include "NDItk/DepletionTable/src/read.hpp"
+  /**
+   *  @brief Read the table data
+   *
+   *  @param[in] iter   the current position in the input
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end ) {
+
+    auto tmp_incident = depletion::IncidentParticle(); 
+    std::vector< depletion::IncidentParticle > incident_data;
+
+    std::string keyword;
+    while ( ( keyword != "end" ) && ( iter != end ) ) {
+
+      keyword = njoy::tools::disco::FreeFormatCharacter::read< std::string >( iter, end );
+
+      // metadata
+      if ( this->metadata_.isMetadataKey( keyword ) ) {
+
+        this->metadata_.read( keyword, iter, end );
+      }
+      // incident particle data 
+      else if ( keyword == tmp_incident.keyword() ) {
+
+        tmp_incident.read( iter, end );
+
+        incident_data.push_back( tmp_incident );
+      }
+      // unknown or end keyword
+      else {
+
+        if ( keyword != "end" ) {
+
+          Log::error( "Unknown keyword found: \'{}\'", keyword );
+          throw std::exception();
+        }
+      }
+
+      // read over whitespace or until the end
+      while ( iter != end && std::isspace( *iter ) ) {
+
+        ++iter;
+      }
+    }
+
+    this->incident_particles_ = incident_data;
+
+    this->verify();
+  };
 
   /**
    *  @brief Print the NDI table

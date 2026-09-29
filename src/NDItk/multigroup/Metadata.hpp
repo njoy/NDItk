@@ -68,7 +68,7 @@ public:
   /* methods */
 
   /**
-   *  @brief Return wether or not a given key corresponds to a metadata key
+   *  @brief Return whether or not a given key corresponds to a metadata key
    */
   bool isMetadataKey( const std::string& keyword ) const {
 

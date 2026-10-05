@@ -169,7 +169,7 @@ public:
       upscatter_groups_( upscatter.has_value()
                          ? base::SingleIntegerRecord( base::Keyword( "up_grps" ), upscatter.value() )
                          : base::SingleIntegerRecord( base::Keyword( "up_grps" ) ) ),
-      downscatter_groups_( upscatter.has_value()
+      downscatter_groups_( downscatter.has_value()
                            ? base::SingleIntegerRecord( base::Keyword( "down_grps" ), downscatter.value() )
                            : base::SingleIntegerRecord( base::Keyword( "down_grps" ) ) ),
       number_reactions_( base::Keyword( "num_reac" ), reactions ) {}

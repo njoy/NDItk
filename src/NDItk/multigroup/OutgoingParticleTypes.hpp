@@ -20,13 +20,44 @@ class OutgoingParticleTypes : protected base::IntegerListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/multigroup/OutgoingParticleTypes/src/verify.hpp"
+  /**
+   *  @brief Verify the outgoing particle types
+   *
+   *  The following verification tests are performed:
+   *    - there is at least one value
+   *
+   *  @param[in] values    the velocity values to be verified
+   */
+  template < typename Range >
+  static void verify( const Range& values ) {
+
+    if ( values.size() < 1 ) {
+
+      Log::error( "Expected at least one outgoing particle type, found {}",
+                  values.size() );
+      throw std::exception();
+    }
+  }
 
 public:
 
   /* constructor */
 
-  #include "NDItk/multigroup/OutgoingParticleTypes/src/ctor.hpp"
+  /**
+   *  @brief Default constructor
+   */
+  OutgoingParticleTypes() : IntegerListRecord( base::Keyword( "sec_part_types" ) ) {}
+
+  /**
+   *  @brief Constructor
+   *
+   *  @param[in] values    the outgoing particle types
+   */
+  OutgoingParticleTypes( std::vector< int > values ) :
+      IntegerListRecord( base::Keyword( "sec_part_types" ), std::move( values ) ) {
+
+    verify( this->values() );
+  }
 
   /* methods */
 
@@ -43,7 +74,22 @@ public:
   using base::IntegerListRecord::end;
   using base::IntegerListRecord::print;
 
-  #include "NDItk/multigroup/OutgoingParticleTypes/src/read.hpp"
+  /**
+   *  @brief Read the record data
+   *
+   *  This function overrides the base record read() function to enable
+   *  verification of the read data.
+   *
+   *  @param[in,out] iter     an iterator to the current position in the input
+   *  @param[in,out] end      an iterator to the end of the input
+   *  @param[in,out] number   the number of particle types
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end, std::size_t number ) {
+
+    base::IntegerListRecord::read( iter, end, number );
+    verify( this->values() );
+  };
 };
 
 } // multigroup namespace

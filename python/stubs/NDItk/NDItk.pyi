@@ -241,7 +241,9 @@ class DosimetryTable:
         """
     def reaction_product_multiplicities(self, type: multigroup.ReactionMultiplicityType) -> multigroup.ReactionMultiplicities:
         """
-        The reaction product multipliciies record for the requested multiplicity typeArguments:
+        The reaction product multiplicities record for the requested multiplicity type
+        
+        Arguments:
             self    the table
             type    the multiplicity type
         """
@@ -447,7 +449,9 @@ class MultigroupTable:
         """
     def reaction_product_multiplicities(self, type: multigroup.ReactionMultiplicityType) -> multigroup.ReactionMultiplicities:
         """
-        The reaction product multipliciies record for the requested multiplicity typeArguments:
+        The reaction product multiplicities record for the requested multiplicity type
+        
+        Arguments:
             self    the table
             type    the multiplicity type
         """

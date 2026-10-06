@@ -20,13 +20,44 @@ class FluxWeights : protected base::RealListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/multigroup/FluxWeights/src/verify.hpp"
+  /**
+   *  @brief Verify the weights
+   *
+   *  The following verification tests are performed:
+   *    - there is at least one value
+   *
+   *  @param[in] weights    the weight values to be verified
+   */
+  template < typename Range >
+  static void verify( const Range& weights ) {
+
+    if ( weights.size() < 1 ) {
+
+      Log::error( "Expected at least one flux weight value, found {}",
+                  weights.size() );
+      throw std::exception();
+    }
+  }
 
 public:
 
   /* constructor */
 
-  #include "NDItk/multigroup/FluxWeights/src/ctor.hpp"
+  /**
+   *  @brief Default constructor
+   */
+  FluxWeights() : RealListRecord( base::Keyword( "wgts" ) ) {}
+
+  /**
+   *  @brief Constructor
+   *
+   *  @param[in] values    the flux weight values
+   */
+  FluxWeights( std::vector< double > values ) :
+      RealListRecord( base::Keyword( "wgts" ), std::move( values ) ) {
+
+    verify( this->values() );
+  }
 
   /* methods */
 
@@ -43,7 +74,22 @@ public:
   using base::RealListRecord::end;
   using base::RealListRecord::print;
 
-  #include "NDItk/multigroup/FluxWeights/src/read.hpp"
+  /**
+   *  @brief Read the record data
+   *
+   *  This function overrides the base record read() function to enable
+   *  verification of the read data.
+   *
+   *  @param[in,out] iter     an iterator to the current position in the input
+   *  @param[in,out] end      an iterator to the end of the input
+   *  @param[in,out] number   the number of weight values
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end, std::size_t number ) {
+
+    base::RealListRecord::read( iter, end, number );
+    verify( this->values() );
+  };
 };
 
 } // multigroup namespace

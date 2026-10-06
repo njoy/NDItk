@@ -22,13 +22,61 @@ class FissionNeutronSpectrumMatrix : protected base::RealListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/multigroup/FissionNeutronSpectrumMatrix/src/verify.hpp"
+  /**
+   *  @brief Verify the fission neutron spectrum vector values
+   *
+   *  The following verification tests are performed:
+   *    - there is at least one value
+   *    - verify matrix size
+   *
+   *  @param[in] values    the production values to be verified
+   */
+  template < typename Range >
+  static void verify( const Range& values ) {
+
+    if ( values.size() < 1 ) {
+
+      Log::error( "Expected at least one fission neutron spectrum matrix value, found {}",
+                  values.size() );
+      throw std::exception();
+    }
+    unsigned int size = std::sqrt( values.size() );
+    if ( values.size() != size * size ) {
+
+      Log::error( "Expected an array of size {} but found {} whoich does not represent a matrix",
+                  size * size, values.size() );
+      throw std::exception();
+    }
+  }
 
 public:
 
   /* constructor */
 
-  #include "NDItk/multigroup/FissionNeutronSpectrumMatrix/src/ctor.hpp"
+  /**
+   *  @brief Default constructor
+   */
+  FissionNeutronSpectrumMatrix() : RealListRecord( base::Keyword( "chi_mat" ) ) {}
+
+  /**
+   *  @brief Constructor for a fission type
+   *
+   *  @param[in] type    the fission type (prompt, delayed or total)
+   */
+  FissionNeutronSpectrumMatrix( FissionType type ) : RealListRecord( base::Keyword( "chi_mat", type ) ) {}
+
+  /**
+   *  @brief Constructor
+   *
+   *  @param[in] type      the fission type (prompt, delayed or total)
+   *  @param[in] values    the fission neutron spectrum matrix values
+   */
+  FissionNeutronSpectrumMatrix( FissionType type,
+                                std::vector< double > values ) :
+      RealListRecord( base::Keyword( "chi_mat", type ), std::move( values ) ) {
+
+    verify( this->values() );
+  }
 
   /* methods */
 
@@ -60,7 +108,22 @@ public:
   using base::RealListRecord::end;
   using base::RealListRecord::print;
 
-  #include "NDItk/multigroup/FissionNeutronSpectrumMatrix/src/read.hpp"
+  /**
+   *  @brief Read the record data
+   *
+   *  This function overrides the base record read() function to enable
+   *  verification of the read data.
+   *
+   *  @param[in,out] iter     an iterator to the current position in the input
+   *  @param[in,out] end      an iterator to the end of the input
+   *  @param[in,out] number   the number of groups
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end, std::size_t number ) {
+
+    base::RealListRecord::read( iter, end, number * number );
+    verify( this->values() );
+  };
 };
 
 } // multigroup namespace

@@ -20,13 +20,65 @@ class HeatingNumbers : protected base::RealListRecord {
 
   /* auxiliary functions */
 
-  #include "NDItk/multigroup/HeatingNumbers/src/verify.hpp"
+  /**
+   *  @brief Verify the heating numbers
+   *
+   *  The following verification tests are performed:
+   *    - there is at least one value
+   *
+   *  @param[in] values    the heating numbers to be verified
+   */
+  template < typename Range >
+  static void verify( const Range& values ) {
+
+    if ( values.size() < 1 ) {
+
+      Log::error( "Expected at least one heating number, found {}",
+                  values.size() );
+      throw std::exception();
+    }
+  }
 
 public:
 
   /* constructor */
 
-  #include "NDItk/multigroup/HeatingNumbers/src/ctor.hpp"
+  /**
+   *  @brief Default constructor for the primary heating numbers
+   */
+  HeatingNumbers() : RealListRecord( base::Keyword( "heating" ) ) {}
+
+  /**
+   *  @brief Default constructor for a secondary particle's heating numbers
+   *
+   *  @param[in] particle    the secondary particle identifier
+   */
+  HeatingNumbers( unsigned int particle ) :
+      RealListRecord( base::Keyword( "heating", particle ) ) {}
+
+  /**
+   *  @brief Constructor for the primary heating numbers
+   *
+   *  @param[in] values    the heating numbers
+   */
+  HeatingNumbers( std::vector< double > values ) :
+      RealListRecord( base::Keyword( "heating" ), std::move( values ) ) {
+
+    verify( this->values() );
+  }
+
+  /**
+   *  @brief Constructor for a secondary particle's heating numbers
+   *
+   *  @param[in] particle    the secondary particle identifier
+   *  @param[in] values      the heating numbers
+   */
+  HeatingNumbers( unsigned int particle, std::vector< double > values ) :
+      RealListRecord( base::Keyword( "heating", particle ),
+                      std::move( values ) ) {
+
+    verify( this->values() );
+  }
 
   /* methods */
 
@@ -44,7 +96,22 @@ public:
   using base::RealListRecord::end;
   using base::RealListRecord::print;
 
-  #include "NDItk/multigroup/HeatingNumbers/src/read.hpp"
+  /**
+   *  @brief Read the record data
+   *
+   *  This function overrides the base record read() function to enable
+   *  verification of the read data.
+   *
+   *  @param[in,out] iter     an iterator to the current position in the input
+   *  @param[in,out] end      an iterator to the end of the input
+   *  @param[in,out] number   the number of heating number values
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end, std::size_t number ) {
+
+    base::RealListRecord::read( iter, end, number );
+    verify( this->values() );
+  };
 };
 
 } // multigroup namespace

@@ -25,7 +25,30 @@ public:
 
   /* constructor */
 
-  #include "NDItk/multigroup/AverageFissionEnergyRelease/src/ctor.hpp"
+  /**
+   *  @brief Default constructor for the average fission energy release
+   */
+  AverageFissionEnergyRelease() : RealListRecord( base::Keyword( "fiss_q" ) ) {}
+
+  /**
+   *  @brief Constructor for the average fission energy release
+   *
+   *  @param[in] total       the total energy release (including delayed particles
+   *                         and neutrinos)
+   *  @param[in] prompt      the recoverable energy release (total minus delayed
+   *                         particles and neutrinos)
+   *  @param[in] neutrons    the energy release through prompt neutrons
+   *  @param[in] gammas      the energy release through prompt gammas
+   *  @param[in] betas       the energy release through delayed betas
+   *  @param[in] fragments   the kinetic energy of fission fragments
+   */
+  AverageFissionEnergyRelease( double total, double prompt, double neutrons,
+                               double gammas, double betas, double fragments ) :
+      RealListRecord( base::Keyword( "fiss_q" ), { prompt, total, betas,
+                                                   gammas, fragments, neutrons } ) {
+
+    //! @todo do we want to do some verification here?
+  }
 
   /* methods */
 
@@ -87,7 +110,21 @@ public:
   using base::RealListRecord::end;
   using base::RealListRecord::print;
 
-  #include "NDItk/multigroup/AverageFissionEnergyRelease/src/read.hpp"
+  /**
+   *  @brief Read the record data
+   *
+   *  This function overrides the base record read() function to enable
+   *  verification of the read data.
+   *
+   *  @param[in,out] iter     an iterator to the current position in the input
+   *  @param[in,out] end      an iterator to the end of the input
+   */
+  template< typename Iterator >
+  void read( Iterator& iter, const Iterator& end ) {
+
+    //! @todo do we want to do some verification here?
+    base::RealListRecord::read( iter, end, 6 );
+  };
 };
 
 } // multigroup namespace
